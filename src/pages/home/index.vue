@@ -3,8 +3,6 @@ import AppPage from "@/components/lib/app-page.vue";
 import AppLink from "@/components/lib/app-link.vue";
 import cache from "@/utils/cache";
 import http from "@/api/lib/http";
-import { to } from "@/utils/AsyncTool";
-import { HttpRequest } from "@/lib/network/@types-http";
 
 
 definePageConfig({
@@ -18,11 +16,14 @@ console.log(cache.getData(key));
 console.log(cache.getData(key));
 
 const onClick = async () => {
-    const [err, res] = await to<HttpRequest.ISuccessResult>(http.get('https://www.baidu.com'));
-    console.log(err);
+    http.get('https://www.baidu.com/12341654566.html').then(res => {
+        console.log('正式方法', res.data);
+    }, error => {
+        console.log(error);
+    }).catch(error => {
+        console.log(error);
+    });
 
-
-    console.log('正式方法', res?.data);
 };
 </script>
 

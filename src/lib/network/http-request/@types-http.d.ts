@@ -3,7 +3,11 @@ export namespace HttpRequest {
     /** 请求头 */
     interface IHeader {
         /** 请求内容类型 */
-        'content-type'
+        'content-type',
+        /** 代理人 */
+        'user-agent',
+        /** 请求来源 */
+        'referer'
     }
 
     type IAnyObject = Record<keyof IHeader | string, any>
@@ -37,7 +41,7 @@ export namespace HttpRequest {
     }
 
     interface IDefaultOptions extends IBasicOptions {
-        url?: string,
+        baseUrl?: string,
     }
 
     interface IRequestOptions extends IBasicOptions {
@@ -60,15 +64,16 @@ export namespace HttpRequest {
         /** 调用结果 */
         errMsg: string
         /** cookies */
-        cookies?: string[]
+        cookies?: string[],
+        /** 请求配置信息 */
+        options?: IRequestOptions
     }
 
+}
+export namespace Interceptor {
 
-    interface IRequestMiddle {
-        (request: IRequestOptions, next: Function)
-    }
-
-    interface IResponseMiddle {
-        (response: ISuccessResult, next: Function)
+    interface IHandle {
+        fulfilled: Function,
+        rejected?: Function
     }
 }

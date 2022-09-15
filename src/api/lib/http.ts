@@ -1,39 +1,59 @@
-import { createHttp } from "@/lib/network/http-core";
-
+import { createHttp } from "@/lib/network/http-request/http-core";
+import type { HttpRequest } from "@/lib/network/http-request/@types-http";
+import { HttpError } from "@/lib/network/http-request/errors/http-error";
 
 const http = createHttp();
 
 http.default = {
-    header: {
-        "content-type": 'application/json'
-    },
+    header: {},
 };
 
-http.useRequest((request, next) => {
-    console.log('请求钩子', request);
-    next(); // 放行
-});
+http.interceptor.request.use((options: HttpRequest.IRequestOptions) => {
+    console.log('-------------请求钩子1 fulfilled');
+    !options.header && (options.header = {});
 
-http.useResponse((response, next) => {
+    // options.url = 'https://www.baidu.com/111111.html';
 
-    response.data = '来到了相应钩子1';
+    options.header["token"] = '123';
 
-    setTimeout(() => {
-        next(response);
-    }, 2000);
+    console.log(options);
+    return options;
 
 });
 
-http.useResponse((response, next) => {
+http.interceptor.request.use((value: HttpRequest.IRequestOptions) => {
+    console.log('-------------请求钩子2 fulfilled');
 
-    response.data = '来到了相应钩子2';
-    next(response);
+    value.header!['sign'] = '456';
+
+    console.log(value);
+    return value;
+
 });
 
-http.useResponse((response, next) => {
+http.interceptor.response.use(async (response: HttpRequest.ISuccessResult) => {
+    if (response.statusCode !== 200) {
+        const res = await http.get('https://www.baidu.com');
+        console.log('拦截器内访问');
+        console.log(res);
+        return Promise.reject(new HttpError('状态码异常', response.options));
+    }
+    return response;
+}, Promise.reject);
 
-    response.data = { msg: '响应钩子3' };
-    next(response);
+http.interceptor.response.use((value: HttpRequest.ISuccessResult) => {
+    console.log('-------------响应钩子1 fulfilled');
+    console.log(value);
+
+    return value;
+
+}, (error: HttpError) => {
+
+    console.log('-------------响应钩子1 rejected');
+    console.log('发生了异常');
+    console.dir(error);
+
+    return Promise.reject(error);
 });
 
 export default http;
