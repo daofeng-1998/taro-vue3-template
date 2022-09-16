@@ -1,5 +1,7 @@
 export namespace HttpRequest {
-
+    interface IAdaptor {
+        (options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult>
+    }
     /** 请求头 */
     interface IHeader {
         /** 请求内容类型 */

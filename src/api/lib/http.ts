@@ -1,11 +1,12 @@
 import { createHttp } from "@/lib/network/http-request/http-core";
 import type { HttpRequest } from "@/lib/network/http-request/@types-http";
 import { HttpError } from "@/lib/network/http-request/errors/http-error";
+import { AsyncRequest } from "@/utils/AsyncAPI";
 
-const http = createHttp();
+const http = createHttp(AsyncRequest as HttpRequest.IAdaptor);
 
 http.default = {
-    header: {},
+    baseUrl: 'https://www.baidu.com'
 };
 
 http.interceptor.request.use((options: HttpRequest.IRequestOptions) => {
@@ -32,6 +33,7 @@ http.interceptor.request.use((value: HttpRequest.IRequestOptions) => {
 });
 
 http.interceptor.response.use(async (response: HttpRequest.ISuccessResult) => {
+    console.log(response.statusCode);
     if (response.statusCode !== 200) {
         const res = await http.get('https://www.baidu.com');
         console.log('拦截器内访问');
@@ -39,7 +41,7 @@ http.interceptor.response.use(async (response: HttpRequest.ISuccessResult) => {
         return Promise.reject(new HttpError('状态码异常', response.options));
     }
     return response;
-}, Promise.reject);
+});
 
 http.interceptor.response.use((value: HttpRequest.ISuccessResult) => {
     console.log('-------------响应钩子1 fulfilled');

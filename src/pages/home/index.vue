@@ -4,7 +4,6 @@ import AppLink from "@/components/lib/app-link.vue";
 import cache from "@/utils/cache";
 import http from "@/api/lib/http";
 
-
 definePageConfig({
     navigationBarTitleText: '首页',
 });
@@ -16,10 +15,8 @@ console.log(cache.getData(key));
 console.log(cache.getData(key));
 
 const onClick = async () => {
-    http.get('https://www.baidu.com/12341654566.html').then(res => {
+    http.get('/12341654566.html').then(res => {
         console.log('正式方法', res.data);
-    }, error => {
-        console.log(error);
     }).catch(error => {
         console.log(error);
     });

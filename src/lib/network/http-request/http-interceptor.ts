@@ -1,14 +1,16 @@
-import { Interceptor } from "@/lib/network/http-request/@types-http";
+import type { Interceptor } from "@/lib/network/http-request/@types-http";
 
 class HttpInterceptor {
 
     private handles: Interceptor.IHandle[] = [];
 
     public use(fulfilled: Function, rejected?: Function) {
-        this.handles.push({
+        const handle: Interceptor.IHandle = {
             fulfilled,
             rejected
-        });
+        };
+        this.handles.push(handle);
+        return handle;
     }
 
     public clear() {
