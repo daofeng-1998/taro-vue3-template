@@ -1,3 +1,5 @@
+import { showModal } from '@tarojs/taro';
+
 /**
  * 将回调形式的异步方法转为Promise，对应的success回调会指向resolve，fail指向reject
  * @param method
@@ -44,4 +46,22 @@ export const to = async <T>(promise: Promise<T>): Promise<[Error | any, T | null
     } catch (error) {
         return [error, null];
     }
+};
+
+/**
+ * 捕获异步函数错误，当然同步函数也支持，并showModal
+ * @param func
+ */
+export const er = (func: (...args: any[]) => Promise<unknown>) => {
+    return async (...args: any[]) => {
+        try {
+            return await func(...args);
+        } catch (error) {
+            // console.log(error instanceof Error);
+            showModal({
+                showCancel: false,
+                content: error.toString()
+            });
+        }
+    };
 };

@@ -1,16 +1,28 @@
-<script setup lang="ts">
-import AppPage from "@/components/lib/app-page.vue";
+<script
+    setup
+    lang="ts"
+>
+
+import AppPage from '@/components/lib/app-page.vue';
+import Taro from '@tarojs/taro';
 
 definePageConfig({
     navigationBarTitleText: ''
 });
 
-</script>
+const onClick = () => {
+    Taro.chooseVideo({
+        success: function (res) {
 
+            window?.alert?.(JSON.stringify(res));
+            console.log(res);
+        }
+    });
+};
+
+</script>
 <template>
     <AppPage>
-        <div>这里是page1</div>
+        <nut-button @click="onClick">选择文件</nut-button>
     </AppPage>
 </template>
-
-<style lang="scss"></style>

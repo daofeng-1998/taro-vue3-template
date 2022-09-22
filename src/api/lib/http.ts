@@ -1,12 +1,13 @@
-import { createHttp } from "@/lib/network/http-request/http-core";
-import type { HttpRequest } from "@/lib/network/http-request/@types-http";
-import { HttpError } from "@/lib/network/http-request/errors/http-error";
-import { AsyncRequest } from "@/utils/AsyncAPI";
+import { createHttp } from '@/lib/network/http-request/http-core';
+import type { HttpRequest } from '@/lib/network/http-request/@types-http';
+import { HttpError } from '@/lib/network/http-request/errors/http-error';
+import { AsyncRequest } from '@/utils/AsyncAPI';
+import { showNotify } from '@/components/lib/script/hint';
 
 const http = createHttp(AsyncRequest as HttpRequest.IAdaptor);
 
 http.default = {
-    baseUrl: 'https://www.baidu.com'
+    baseUrl: 'https://www.baidu.com',
 };
 
 http.interceptor.request.use((options: HttpRequest.IRequestOptions) => {
@@ -15,7 +16,7 @@ http.interceptor.request.use((options: HttpRequest.IRequestOptions) => {
 
     // options.url = 'https://www.baidu.com/111111.html';
 
-    options.header["token"] = '123';
+    options.header['token'] = '123';
 
     console.log(options);
     return options;
@@ -34,6 +35,8 @@ http.interceptor.request.use((value: HttpRequest.IRequestOptions) => {
 
 http.interceptor.response.use(async (response: HttpRequest.ISuccessResult) => {
     console.log(response.statusCode);
+    showNotify(response.statusCode.toString());
+
     if (response.statusCode !== 200) {
         const res = await http.get('https://www.baidu.com');
         console.log('拦截器内访问');

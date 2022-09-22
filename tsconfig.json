@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "types": ["@tarojs/components/vue3"],
         "target": "es2017",
         "module": "commonjs",
         "removeComments": false,
@@ -15,7 +16,9 @@
         "sourceMap": true,
         "baseUrl": "./",
         "rootDir": "./",
-        "jsx": "react-jsx",
+        "jsx": "preserve",
+        "jsxFactory": "h",
+        "jsxFragmentFactory": "Fragment",
         "allowJs": true,
         "resolveJsonModule": true,
         "typeRoots": [

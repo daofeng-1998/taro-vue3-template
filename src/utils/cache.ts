@@ -6,7 +6,7 @@ class Cache {
      * @param data
      */
     setData(data: any): string {
-        const key = "cache_" + Math.random().toString().substring(2);
+        const key = 'cache_' + Math.random().toString().substring(2);
         this.cachePool.set(key, data);
         return key;
     }

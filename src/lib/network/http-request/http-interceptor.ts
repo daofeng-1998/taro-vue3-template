@@ -1,4 +1,4 @@
-import type { Interceptor } from "@/lib/network/http-request/@types-http";
+import type { Interceptor } from '@/lib/network/http-request/@types-http';
 
 class HttpInterceptor {
 

@@ -5,7 +5,7 @@ const config = {
     },
     projectName: 'ts-template',
     date: '2022-8-24',
-    designWidth: 375,
+    designWidth: 750,
     deviceRatio: {
         640: 2.34 / 2,
         750: 1,
@@ -46,7 +46,12 @@ const config = {
         postcss: {
             pxtransform: {
                 enable: true,
-                config: {}
+                config: {
+                    designWidth(input) {
+                        const isNutUi = input.file.replace(/\\+/g, '/').indexOf('@nutui/nutui-taro') > -1
+                        return isNutUi ? 375 : 750
+                    }
+                }
             },
             url: {
                 enable: true,

@@ -1,6 +1,6 @@
-import Taro from "@tarojs/taro";
+import Taro from '@tarojs/taro';
 
-import { Router } from "@/utils/utils";
+import { Router } from '@/utils/utils';
 
 
 /**

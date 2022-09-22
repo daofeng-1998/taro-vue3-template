@@ -1,7 +1,6 @@
-import type { HttpRequest } from "@/lib/network/http-request/@types-http";
-import HttpInterceptor from "@/lib/network/http-request/http-interceptor";
-import { HttpError } from "@/lib/network/http-request/errors/http-error";
-
+import type { HttpRequest } from '@/lib/network/http-request/@types-http';
+import HttpInterceptor from '@/lib/network/http-request/http-interceptor';
+import { HttpError } from '@/lib/network/http-request/errors/http-error';
 
 class HttpCore {
     /**
@@ -10,7 +9,9 @@ class HttpCore {
      */
     private readonly adaptor: HttpRequest.IAdaptor;
 
-    /** 拦截器 */
+    /**
+     * 拦截器
+     * */
     public interceptor = {
         /** 请求拦截器 */
         request: new HttpInterceptor(),
@@ -27,15 +28,21 @@ class HttpCore {
         this.adaptor = adaptor;
     }
 
+    /**
+     * 派发实际请求，通过提供的适配器
+     * @param options
+     * @private
+     */
     private dispatchRequest(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult | HttpError> {
-        return this.adaptor(options).then((res) => {
-            res.options = options;
-            return res;
-        }).catch(error => {
-            const httpError = new HttpError(error.errMsg);
-            httpError.options = options;
-            return httpError;
-        });
+        return this.adaptor(options)
+            .then((res) => {
+                res.options = options;
+                return res;
+            }).catch(error => {
+                const httpError = new HttpError(error.errMsg);
+                httpError.options = options;
+                return httpError;
+            });
 
     }
 
@@ -48,7 +55,7 @@ class HttpCore {
         let url = options.url;
         url = url.includes('://')
             ? url
-            : (this.default.baseUrl || '').concat(url);
+            : (this.default?.baseUrl || '').concat(url);
 
         /** 最终请求配置信息 */
         const finalOptions = {

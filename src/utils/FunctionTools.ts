@@ -1,13 +1,15 @@
-import { globalEnv } from "@/utils/tools";
+import { globalEnv } from '@/utils/tools';
 
 /**
  * 柯里化
  * @param {Function} func
+ * @param count 函数的参数个数
  * @returns
  */
-export const curry = (func: Function): Function => {
+export const curry = (func: Function, count: number): Function => {
     return function _(...args) {
-        if (args.length < func.length) {
+        debugger;
+        if (args.length < count) {
             return function (...a) {
                 return _(...args.concat(a));
             };

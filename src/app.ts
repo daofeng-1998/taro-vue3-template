@@ -2,13 +2,14 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import './app.scss';
 
-import Taro from "@tarojs/taro";
-import nutui from "@/plugins/nutui";
-import { addRouterHook } from "@/utils/Router";
+import Taro from '@tarojs/taro';
+import nutui from '@/plugins/nutui';
+import { addRouterHook } from '@/utils/Router';
 
 
 const App = createApp({
     onShow() {
+
         addRouterHook(async (currentPath, url, next) => {
             console.log('钩子触发 - onShow');
             console.log(`当前页：${currentPath}`);

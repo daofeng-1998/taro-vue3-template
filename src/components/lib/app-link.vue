@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { go } from "@/utils/Router";
+import { go } from '@/utils/Router';
 
 defineProps({
     url: {
