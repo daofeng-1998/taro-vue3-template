@@ -1,6 +1,6 @@
-import { Navbar, Icon, Button, Notify } from '@nutui/nutui-taro';
+import { Navbar, Icon, Button, Notify, OverLay } from '@nutui/nutui-taro';
 
-const el = [Navbar, Icon, Button, Notify];
+const el = [Navbar, Icon, Button, Notify, OverLay];
 
 export default {
     install(app) {

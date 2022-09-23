@@ -52,7 +52,7 @@ export const to = async <T>(promise: Promise<T>): Promise<[Error | any, T | null
  * 捕获异步函数错误，当然同步函数也支持，并showModal
  * @param func
  */
-export const er = (func: (...args: any[]) => Promise<unknown>) => {
+export const er = (func: (...args: any[]) => Promise<unknown> | any) => {
     return async (...args: any[]) => {
         try {
             return await func(...args);

@@ -1,4 +1,4 @@
-const path = require("path");
+const path = require('path');
 const config = {
     alias: {
         '@': path.resolve(__dirname, '..', 'src')
@@ -22,7 +22,7 @@ const config = {
     },
     framework: 'vue3',
     sass: {
-        data: `@import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";`,
+        data: '@import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";',
     },
     mini: {
 
@@ -48,8 +48,8 @@ const config = {
                 enable: true,
                 config: {
                     designWidth(input) {
-                        const isNutUi = input.file.replace(/\\+/g, '/').indexOf('@nutui/nutui-taro') > -1
-                        return isNutUi ? 375 : 750
+                        const isNutUi = input.file.replace(/\\+/g, '/').indexOf('@nutui/nutui-taro') > -1;
+                        return isNutUi ? 375 : 750;
                     }
                 }
             },
