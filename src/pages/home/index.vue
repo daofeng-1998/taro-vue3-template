@@ -2,11 +2,13 @@
     setup
     lang="ts"
 >
-import AppPage from '@/components/lib/app-page.vue';
+import AppPage from '@/components/lib/app-page/index.vue';
 import AppLink from '@/components/lib/app-link.vue';
 import http from '@/api/lib/http';
 import { er } from '@/utils/AsyncTool';
-import { hideLoading, showLoading, showNotify } from '@/components/lib/script/hint';
+import { useLoading } from '@/components/lib/interact/app-loading/use-loading';
+
+console.log('home-page');
 
 definePageConfig({
     navigationBarTitleText: '首页',
@@ -17,10 +19,20 @@ const onClick = er(async () => {
     console.log(res.data);
 });
 
+console.log('取值');
+
+const Loading = useLoading();
+Loading.show();
+
+
+setTimeout(() => {
+    Loading.hide();
+}, 5000);
+
 const loading = er(() => {
-    showLoading();
+    Loading.show();
     setTimeout(() => {
-        hideLoading();
+        Loading.hide();
     }, 5000);
 });
 </script>
@@ -35,10 +47,7 @@ const loading = er(() => {
             <div :class="$style['link-title']">哈哈</div>
         </AppLink>
 
-        <nut-button
-            type="primary"
-            @click="showNotify('哈哈哈哈哈')"
-        >主要按钮
+        <nut-button type="primary">主要按钮
         </nut-button>
         <nut-button
             type="info"

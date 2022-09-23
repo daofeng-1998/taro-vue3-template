@@ -26,3 +26,11 @@ interface INotifyState extends IBaseState, IVisible, IMsg {
 interface ILoadingState extends IBaseState, IVisible, IMsg {
 
 }
+
+interface ILoading {
+    show()
+
+    show(msg: string)
+
+    hide()
+}

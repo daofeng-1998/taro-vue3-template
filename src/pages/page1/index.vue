@@ -3,7 +3,7 @@
     lang="ts"
 >
 
-import AppPage from '@/components/lib/app-page.vue';
+import AppPage from '@/components/lib/app-page/index.vue';
 import Taro from '@tarojs/taro';
 
 definePageConfig({

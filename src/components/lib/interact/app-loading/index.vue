@@ -2,25 +2,31 @@
     setup
     lang="ts"
 >
-import { useVModel } from '@/hooks/commonHooks';
+import { useVModel } from '@/hooks/common-hooks';
+
+console.log('app-loading');
 
 const props = defineProps({
     show: {
         type: Boolean,
         default: true
+    },
+    msg: {
+        type: String,
+        default: null
     }
 });
 
 const emit = defineEmits(['update:show']);
 
-const visible = useVModel(props, 'show', emit);
-
+const vShow = useVModel<Boolean>(props, 'show', emit);
+const vMsg = useVModel<string | undefined>(props, 'msg', emit);
 
 </script>
 
 <template>
     <nut-overlay
-        v-model:visible="visible"
+        v-model:visible="vShow"
         :class="s['app-loading_overlay']"
     >
         <div :class="s['app-loading']">

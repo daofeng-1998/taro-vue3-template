@@ -4,21 +4,18 @@
 >
 import AppSafeTop from '@/components/lib/app-safe-top.vue';
 import AppSafeBottom from '@/components/lib/app-safe-bottom.vue';
-import AppLoading from '@/components/lib/interact/app-loading.vue';
-import { useReactive } from '@/hooks/commonHooks';
+import AppLoading from '@/components/lib/interact/app-loading/index.vue';
+import { useLoadingState } from '@/components/lib/interact/app-loading/use-loading';
+import { reactive } from 'vue';
 
-const notifyState = useReactive<INotifyState>('notifyState', {
-    activated: false,
+console.log('app-page');
+
+const loadingState = useLoadingState();
+
+const notifyState = reactive({
     show: false,
     msg: ''
 });
-
-const loadingState = useReactive<ILoadingState>('loadingState', {
-    activated: false,
-    show: false,
-    msg: ''
-});
-
 </script>
 
 <!--页面包裹容器-->
@@ -31,12 +28,11 @@ const loadingState = useReactive<ILoadingState>('loadingState', {
     />
 
     <AppLoading
-        v-if="loadingState.activated"
         :show="loadingState.show"
+        :msg="loadingState.msg"
     />
 
     <nut-navbar
-        v-if="notifyState.activated"
         :safe-area-inset-top="true"
         title="你好"
     ></nut-navbar>

@@ -2,7 +2,6 @@ import { createHttp } from '@/lib/network/http-request/http-core';
 import type { HttpRequest } from '@/lib/network/http-request/@types-http';
 import { HttpError } from '@/lib/network/http-request/errors/http-error';
 import { AsyncRequest } from '@/utils/AsyncAPI';
-import { showNotify } from '@/components/lib/script/hint';
 
 const http = createHttp(AsyncRequest as HttpRequest.IAdaptor);
 
@@ -35,7 +34,6 @@ http.interceptor.request.use((value: HttpRequest.IRequestOptions) => {
 
 http.interceptor.response.use(async (response: HttpRequest.ISuccessResult) => {
     console.log(response.statusCode);
-    showNotify(response.statusCode.toString());
 
     if (response.statusCode !== 200) {
         const res = await http.get('https://www.baidu.com');
