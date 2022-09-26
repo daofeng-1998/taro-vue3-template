@@ -67,7 +67,7 @@ const showDialog = () => {
             :class="$style.link"
             url="/pages/page1/index"
         >
-            <div :class="$style['link-title']">哈哈</div>
+            <div :class="$style['link-title']">路由跳转测试</div>
         </AppLink>
 
         <nut-button type="primary">主要按钮
@@ -102,5 +102,13 @@ const showDialog = () => {
     .link-title {
         color: #00ff00;
     }
+}
+</style>
+
+<style
+    lang="scss"
+>
+.app-link {
+    padding: 30px 0;
 }
 </style>

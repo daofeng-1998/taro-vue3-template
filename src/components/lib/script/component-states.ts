@@ -1,6 +1,7 @@
 import { SYMBOL_DIALOG, SYMBOL_LOADING } from '@/components/lib/script/Symbols';
 import { useInstanceDataWithDefault } from '@/components/lib/script/component-tool';
 import { Ref } from 'vue';
+import type { IDialogSync, ILoadingState } from '@/components/lib/app';
 
 const states = {
     /** loading */
@@ -13,21 +14,24 @@ const states = {
     [SYMBOL_DIALOG]: () => ({
         activated: false,
         title: '',
+        titleColor: '',
         content: '',
+        contentColor: '',
         show: false,
-        showCancel: true,
+        showCancel: false,
+        cancelText: '取消',
+        cancelColor: undefined,
+        confirmColor: undefined,
+        confirmText: '确定',
+        disableConfirm: false,
+        disableCancel: false,
         onConfirm: undefined,
         onCancel: undefined
     } as IDialogSync),
-    // [SYMBOL_DIALOG]: () => ({
-    //     activated: true,
-    //     title: '测试标题',
-    //     content: '测试内容',
-    //     show: true,
-    //     showCancel: true,
-    //     onConfirm: undefined,
-    //     onCancel: undefined
-    // } as IDialogState)
+};
+
+export const getNewState = <T>(key: string | symbol): T => {
+    return states[key]() as T;
 };
 
 export const useComponentState = <T>(key: string | symbol): Ref<T> => {

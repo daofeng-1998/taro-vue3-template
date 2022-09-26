@@ -53,3 +53,25 @@
     height: 100%;
     background-color: rgba(0, 0, 0, .1);
 }
+
+// 隐藏滚动条
+
+page :nth-child(n) ::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    -webkit-appearance: none;
+    background: transparent;
+}
+
+::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    -webkit-appearance: none;
+    background: transparent;
+}
+
+page, body {
+    font-size: 30px;
+}

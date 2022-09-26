@@ -1,4 +1,19 @@
 const path = require('path');
+
+let env = process.env.TARO_ENV; //编译时环境
+let outputRoot = '';
+
+switch (env) {
+    case 'weapp':
+        outputRoot = 'dist/dist_weapp';
+        break;
+    case 'h5':
+        outputRoot = 'dist/dist_h5';
+        break;
+    default:
+        outputRoot = 'dist/default';
+}
+
 const config = {
     alias: {
         '@': path.resolve(__dirname, '..', 'src')
@@ -13,7 +28,7 @@ const config = {
         375: 2 / 1
     },
     sourceRoot: 'src',
-    outputRoot: 'dist',
+    outputRoot: outputRoot,
     plugins: ['@tarojs/plugin-html', 'taro-plugin-pinia'],
     defineConstants: {},
     copy: {

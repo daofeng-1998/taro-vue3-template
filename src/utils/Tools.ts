@@ -60,3 +60,52 @@ export const formatDate = (date: Date | string, fmt: string = 'yyyy-MM-dd HH:mm:
         return '';
     }
 };
+
+/**
+ * 倒计时工具
+ * @param {object} option -  配置项
+ * @param {number} option.timestemp - 时间戳，毫秒
+ * @param {number} option.interval=1000 - 间隔时间, 默认1000毫秒
+ * @param {Function} [option.callback] - 回调
+ * @returns {Function} cancel 停止计时器
+ * 注（一定注意）：不管是使用此工具还是自己写，回调的整体执行时间都不应该超过interval
+ */
+export const countdown = function ({
+    timestemp,
+    interval: originalInterval = 1000,
+    callback,
+}) {
+    if (!timestemp || timestemp <= 0 || timestemp < originalInterval) return callback?.(0);
+
+    let stop = false;
+    const cancel = () => {
+        stop = true;
+    };
+
+    let curIdx = 1;
+    let interval = originalInterval;
+    let ct = Date.now();
+    countdown(interval);
+
+    function countdown(interval) {
+        if (stop) return;
+        let timer = setTimeout(function () {
+            clearTimeout(timer);
+
+            let resetTime = timestemp - originalInterval * curIdx;
+            if (resetTime < 0) resetTime = 0;
+            callback?.(resetTime);
+            if (!resetTime) return;
+
+            curIdx++;
+
+            let ct2 = Date.now();
+            let deviation = ct2 - interval - ct;
+            if (deviation >= originalInterval || deviation <= 0) deviation = 5; // 防止恶意更改本地时间
+            ct = Date.now();
+            countdown(originalInterval - deviation - (ct - ct2));
+        }, interval);
+    }
+
+    return cancel;
+};

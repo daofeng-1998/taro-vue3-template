@@ -47,6 +47,14 @@ const props = defineProps({
         type: String,
         default: '确定'
     },
+    disableCancel: {
+        type: Boolean,
+        default: false
+    },
+    disableConfirm: {
+        type: Boolean,
+        default: false
+    },
     confirmColor: {
         type: String,
         default: v.mainColor
@@ -83,10 +91,14 @@ const onConfirm = () => emit('confirm');
                 <slot v-else/>
             </div>
             <div :class="[s['app-dialog__buttons'], 'hairline--top']">
-                <div :class="[s['button-wrapper'], 'hairline--right']">
+                <div
+                    v-if="showCancel"
+                    :class="[s['button-wrapper'], 'hairline--right']"
+                >
                     <nut-button
-                        v-if="showCancel"
                         :class="[s['button'], s['button_cancel']]"
+                        :disabled="disableCancel"
+                        block
                         :style="{ color: cancelColor }"
                         @click.stop="onCancel"
                     >{{ cancelText }}
@@ -96,6 +108,8 @@ const onConfirm = () => emit('confirm');
                 <div :class="s['button-wrapper']">
                     <nut-button
                         :class="[s['button'], s['button_confirm']]"
+                        :disabled="disableConfirm"
+                        block
                         :style="{ color: confirmColor }"
                         @click.stop="onConfirm"
                     >{{ confirmText }}
@@ -151,7 +165,7 @@ const onConfirm = () => emit('confirm');
                     $height: $space-small * 5;
                     border: 0;
 
-                    text-align: center;
+                    //text-align: center;
                     line-height: $height;
                     height: $height;
                     background-color: #fff;
@@ -159,11 +173,6 @@ const onConfirm = () => emit('confirm');
                     display: block;
                     padding: 0;
                     position: relative;
-
-
-                    &.button_confirm {
-                        color: $main-color;
-                    }
 
                 }
             }

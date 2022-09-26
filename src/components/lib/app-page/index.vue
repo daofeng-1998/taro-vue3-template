@@ -37,6 +37,8 @@ console.log('app-page', dialogState.value);
         :show-cancel="dialogState.showCancel"
         :title="dialogState.title"
         :title-color="dialogState.titleColor"
+        :disable-cancel="dialogState.disableCancel"
+        :disable-confirm="dialogState.disableConfirm"
         @cancel="dialogState.onCancel"
         @confirm="dialogState.onConfirm"
     />
