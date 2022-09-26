@@ -5,37 +5,46 @@
 import AppSafeTop from '@/components/lib/app-safe-top.vue';
 import AppSafeBottom from '@/components/lib/app-safe-bottom.vue';
 import AppLoading from '@/components/lib/interact/app-loading/index.vue';
-import { useLoadingState } from '@/components/lib/interact/app-loading/use-loading';
-import { reactive } from 'vue';
+import AppDialog from '@/components/lib/interact/app-dialog/index.vue';
+import { useComponentState } from '@/components/lib/script/component-states';
+import { SYMBOL_DIALOG, SYMBOL_LOADING } from '@/components/lib/script/Symbols';
 
 console.log('app-page');
 
-const loadingState = useLoadingState();
-
-const notifyState = reactive({
-    show: false,
-    msg: ''
-});
+const loadingState = useComponentState<ILoadingState>(SYMBOL_LOADING);
+const dialogState = useComponentState<IDialogSync>(SYMBOL_DIALOG);
+console.log('app-page', dialogState.value);
 </script>
 
 <!--页面包裹容器-->
 <template>
     <AppSafeTop/>
 
-    <nut-notify
-        v-model:visible="notifyState.show"
-        :msg="notifyState.msg"
-    />
-
     <AppLoading
+        v-if="loadingState.activated"
         :show="loadingState.show"
         :msg="loadingState.msg"
     />
+    <AppDialog
+        v-if="dialogState.activated"
+        v-model:show="dialogState.show"
+        :cancel-color="dialogState.cancelColor"
+        :cancel-text="dialogState.cancelText"
+        :confirm-color="dialogState.confirmColor"
+        :confirm-text="dialogState.confirmText"
+        :content="dialogState.content"
+        :content-color="dialogState.contentColor"
+        :show-cancel="dialogState.showCancel"
+        :title="dialogState.title"
+        :title-color="dialogState.titleColor"
+        @cancel="dialogState.onCancel"
+        @confirm="dialogState.onConfirm"
+    />
 
-    <nut-navbar
-        :safe-area-inset-top="true"
-        title="你好"
-    ></nut-navbar>
+    <!--<nut-navbar-->
+    <!--    :safe-area-inset-top="true"-->
+    <!--    title="你好"-->
+    <!--&gt;</nut-navbar>-->
     <slot/>
     <AppSafeBottom/>
 </template>

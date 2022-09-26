@@ -1,9 +1,9 @@
-import { createHttp } from '@/lib/network/http-request/http-core';
+import { HttpCore } from '@/lib/network/http-request/http-core';
 import type { HttpRequest } from '@/lib/network/http-request/@types-http';
 import { HttpError } from '@/lib/network/http-request/errors/http-error';
 import { AsyncRequest } from '@/utils/AsyncAPI';
 
-const http = createHttp(AsyncRequest as HttpRequest.IAdaptor);
+const http = HttpCore.create(AsyncRequest as HttpRequest.IAdaptor);
 
 http.default = {
     baseUrl: 'https://www.baidu.com',

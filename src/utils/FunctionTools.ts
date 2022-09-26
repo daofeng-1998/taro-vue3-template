@@ -1,4 +1,4 @@
-import { globalEnv } from '@/utils/tools';
+import { globalEnv } from '@/utils/Tools';
 
 /**
  * 柯里化

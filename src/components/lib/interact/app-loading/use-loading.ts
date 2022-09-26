@@ -1,22 +1,13 @@
-import { useInstanceDataWithDefault } from '@/components/lib/script/component-tool';
 import { SYMBOL_LOADING } from '@/components/lib/script/Symbols';
 import { Ref } from 'vue';
+import { useComponentState } from '@/components/lib/script/component-states';
 
-const newState = (): ILoadingState => {
-    return {
-        show: false,
-        activated: false,
-        msg: ''
-    };
-};
+export const useLoading = (): {
+    show(msg?: string)
+    hide()
+} => {
 
-export const useLoadingState = (): Ref<ILoadingState> => {
-    return useInstanceDataWithDefault(SYMBOL_LOADING, newState);
-};
-
-export const useLoading = (): ILoading => {
-
-    const state: Ref<ILoadingState> = useLoadingState();
+    const state: Ref<ILoadingState> = useComponentState<ILoadingState>(SYMBOL_LOADING);
 
     return {
         show(msg?: string) {
@@ -36,5 +27,5 @@ export const useLoading = (): ILoading => {
                 show: false
             });
         }
-    } as ILoading;
+    };
 };

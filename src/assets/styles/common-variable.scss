@@ -1,0 +1,10 @@
+$space-small: 20px;
+$space-normal: 30px;
+$space-big: 40px;
+$space-large: 50px;
+
+$main-color: #1989fa;
+
+:export {
+    mainColor: $main-color;
+}

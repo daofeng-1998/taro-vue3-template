@@ -4,20 +4,20 @@
 >
 
 import AppPage from '@/components/lib/app-page/index.vue';
-import Taro from '@tarojs/taro';
+import { useLoading } from '@/components/lib/interact/app-loading/use-loading';
 
 definePageConfig({
     navigationBarTitleText: ''
 });
 
-const onClick = () => {
-    Taro.chooseVideo({
-        success: function (res) {
+const loading = useLoading();
 
-            window?.alert?.(JSON.stringify(res));
-            console.log(res);
-        }
-    });
+const onClick = () => {
+    loading.show();
+
+    setTimeout(() => {
+        loading.hide();
+    }, 5000);
 };
 
 </script>

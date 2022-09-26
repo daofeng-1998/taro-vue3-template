@@ -2,7 +2,7 @@ import type { HttpRequest } from '@/lib/network/http-request/@types-http';
 import HttpInterceptor from '@/lib/network/http-request/http-interceptor';
 import { HttpError } from '@/lib/network/http-request/errors/http-error';
 
-class HttpCore {
+export class HttpCore {
     /**
      * 请求适配器，默认为Taro.request
      * @private
@@ -24,8 +24,19 @@ class HttpCore {
      */
     public default: HttpRequest.IDefaultOptions = {} as HttpRequest.IDefaultOptions;
 
-    constructor(adaptor: HttpRequest.IAdaptor) {
+    private constructor(adaptor: HttpRequest.IAdaptor) {
         this.adaptor = adaptor;
+    }
+
+    /**
+     * 创建一个Http请求实例对象
+     * @param adaptor
+     */
+    public static create(adaptor: HttpRequest.IAdaptor) {
+        if (!adaptor || typeof adaptor !== 'function') {
+            throw new TypeError('adaptor is not a function');
+        }
+        return new HttpCore(adaptor);
     }
 
     /**
@@ -112,14 +123,29 @@ class HttpCore {
         } as HttpRequest.IRequestOptions);
     }
 
-}
-
-/**
- * 创建一个http请求实例对象
- */
-export const createHttp = (adaptor: HttpRequest.IAdaptor) => {
-    if (!adaptor || typeof adaptor !== 'function') {
-        throw new TypeError('adaptor is not a function');
+    /**
+     * 发起通用PUT请求
+     * @param url
+     * @param options
+     */
+    public put<R>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
+        return this.request({
+            ...options,
+            url,
+            method: 'PUT'
+        } as HttpRequest.IRequestOptions);
     }
-    return new HttpCore(adaptor);
-};
+
+    /**
+     * 发起通用DELETE请求
+     * @param url
+     * @param options
+     */
+    public delete<R>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
+        return this.request({
+            ...options,
+            url,
+            method: 'DELETE'
+        } as HttpRequest.IRequestOptions);
+    }
+}
