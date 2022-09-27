@@ -4,7 +4,7 @@ import './app.scss';
 import nutui from '@/plugins/nutui';
 import { addRouterHook } from '@/utils/Router';
 import { useDialog } from '@/components/lib/interact/app-dialog/use-dialog';
-import { asyncSleep } from '@/utils/AsyncAPI';
+import { exactInterval } from '@/utils/Tools';
 
 const App = createApp({
     onShow() {
@@ -18,28 +18,28 @@ const App = createApp({
             if (url.includes('pages/page1/index')) {
                 const dialog = useDialog();
 
-
                 const promise = dialog.show({
                     content: '是否继续跳转',
                     showCancel: true,
                     disableConfirm: true,
                     confirmText: '确定(10)'
                 });
-                let stop = false;
 
-                promise.then(next).finally(() => stop = true);
+                let i = 9;
+                const stop = exactInterval(() => {
 
-                for (let i = 9; i >= 0 && !stop; i--) {
-                    await asyncSleep(1000);
-                    dialog.setState({
-                        confirmText: `确定(${i})`
-                    });
-                }
-                dialog.setState({
-                    disableConfirm: false,
-                    confirmText: '确定'
-                });
+                    dialog.setState({ confirmText: `确定(${i})` });
 
+                    if (i-- <= 0) {
+                        stop();
+                        dialog.setState({
+                            confirmText: '确定',
+                            disableConfirm: false,
+                        });
+                    }
+                }, 1000);
+
+                promise.then(next).finally(stop);
             }
         });
     },

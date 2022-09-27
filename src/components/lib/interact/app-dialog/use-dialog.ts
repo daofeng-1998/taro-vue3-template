@@ -1,7 +1,6 @@
 import { Ref } from 'vue';
 import { getNewState, useComponentState } from '@/components/lib/script/component-states';
 import { SYMBOL_DIALOG } from '@/components/lib/script/Symbols';
-import type { IDialogBase, IDialogControl, IDialogSync } from '@/components/lib/app';
 
 const newController = (state: Ref<IDialogSync>): IDialogControl => {
 
