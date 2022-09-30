@@ -1,7 +1,9 @@
 /**
  * 全局环境对象
  */
-export const globalEnv = window || self || global;
+import Taro from '@tarojs/taro';
+
+export const globalEnv = window || self;
 
 /**
  * 格式化数字，默认保留两位小数
@@ -61,6 +63,22 @@ export const formatDate = (date: Date | string, fmt: string = 'yyyy-MM-dd HH:mm:
     }
 };
 
+
+//生成从minNum到maxNum的随机数
+export const random = (...args: number[]) => {
+    const minNum = args[0];
+    const maxNum = args[1];
+
+    switch (args.length) {
+        case 1:
+            return Math.floor(Math.random() * minNum + 1);
+        case 2:
+            return Math.floor(Math.random() * (maxNum - minNum + 1) + minNum);
+        default:
+            return 0;
+    }
+};
+
 /**
  * 精确不卡顿的定时任务
  * @param func
@@ -70,18 +88,17 @@ export const exactInterval = (func: Function, delay: number): () => boolean => {
     let stop = false;
 
     let preTime = -1;
-    const handle = (time) => {
+    const handle = (time: number): void => {
 
         if (preTime === -1) preTime = time;
 
         if (time - preTime >= delay) {
             preTime = time;
-            process.nextTick(func);
+            // @ts-ignore
+            Taro.nextTick(func);
         }
 
-        if (!stop) {
-            requestAnimationFrame(handle);
-        }
+        stop || requestAnimationFrame(handle);
     };
     requestAnimationFrame(handle);
 

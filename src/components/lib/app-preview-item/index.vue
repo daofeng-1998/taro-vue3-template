@@ -1,0 +1,78 @@
+<script lang="ts">
+export default { name: 'app-preview-item' };
+</script>
+<script
+    lang="ts"
+    setup
+>
+import { computed, ComputedRef, inject } from 'vue';
+import Taro from '@tarojs/taro';
+
+defineProps({
+    label: String,
+    value: String,
+    valueColor: {
+        type: String,
+        default: '#000'
+    }
+});
+
+const labelWidth =
+    inject<ComputedRef<string>>('label-width')
+    || computed(() => Taro.pxTransform(200));
+
+</script>
+
+<template>
+    <view class="app-preview-item">
+        <view
+            :style="{ width: labelWidth }"
+            class="app-preview-item__label"
+        >
+            <view
+                v-if="label"
+                class="app-preview-item__label-text"
+            >{{ label }}
+            </view>
+            <slot
+                v-else
+                name="label"
+            />
+        </view>
+
+        <view
+            :style="{ color: valueColor }"
+            class="app-preview-item__content"
+        >
+            <template v-if="value">{{ value }}</template>
+            <slot
+                v-else
+                name="content"
+            />
+        </view>
+    </view>
+</template>
+
+<style lang="scss">
+@import '@/components/lib/styles/variable.scss';
+@import '@/assets/styles/common-variable.scss';
+
+.app-preview-item {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    font-size: $preview-item-font-size;
+    padding: $preview-item-padding $space-small;
+
+    &__label {
+        color: $color-gray2;
+
+    }
+
+    &__content {
+        text-align: right;
+    }
+}
+
+</style>

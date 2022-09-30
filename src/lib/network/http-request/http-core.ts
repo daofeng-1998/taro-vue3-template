@@ -2,6 +2,8 @@ import type { HttpRequest } from '@/lib/network/http-request/@types-http';
 import HttpInterceptor from '@/lib/network/http-request/http-interceptor';
 import { HttpError } from '@/lib/network/http-request/errors/http-error';
 
+type Response = string | HttpRequest.IAnyObject | ArrayBuffer;
+
 export class HttpCore {
     /**
      * 请求适配器，默认为Taro.request
@@ -61,7 +63,7 @@ export class HttpCore {
      * 发起通用请求
      * @param options
      */
-    public request<R>(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult<R> | any> {
+    public request<R extends Response>(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult<R>> {
 
         let url = options.url;
         url = url.includes('://')
@@ -94,6 +96,7 @@ export class HttpCore {
             promise = promise.then(handle.fulfilled, handle.rejected);
         });
 
+        // @ts-ignore
         return promise;
     }
 
@@ -102,7 +105,7 @@ export class HttpCore {
      * @param url
      * @param options
      */
-    public get<R>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
+    public get<R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
         return this.request({
             ...options,
             url,
@@ -115,7 +118,7 @@ export class HttpCore {
      * @param url
      * @param options
      */
-    public post<R>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
+    public post<R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
         return this.request({
             ...options,
             url,
@@ -128,7 +131,7 @@ export class HttpCore {
      * @param url
      * @param options
      */
-    public put<R>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
+    public put<R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
         return this.request({
             ...options,
             url,
@@ -141,7 +144,7 @@ export class HttpCore {
      * @param url
      * @param options
      */
-    public delete<R>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
+    public delete<R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
         return this.request({
             ...options,
             url,

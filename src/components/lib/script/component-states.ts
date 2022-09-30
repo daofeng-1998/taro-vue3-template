@@ -1,7 +1,6 @@
 import { SYMBOL_DIALOG, SYMBOL_LOADING } from '@/components/lib/script/Symbols';
 import { useInstanceDataWithDefault } from '@/components/lib/script/component-tool';
 import { Ref } from 'vue';
-import type { IDialogSync, ILoadingState } from '@/components/lib/app';
 
 const states = {
     /** loading */

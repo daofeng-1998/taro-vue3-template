@@ -1,3 +1,6 @@
+<script lang="ts">
+export default { name: 'app-page' };
+</script>
 <script
     setup
     lang="ts"
@@ -18,6 +21,7 @@ console.log('app-page', dialogState.value);
 
 <!--页面包裹容器-->
 <template>
+
     <AppSafeTop/>
 
     <AppLoading
@@ -28,17 +32,23 @@ console.log('app-page', dialogState.value);
     <AppDialog
         v-if="dialogState.activated"
         v-model:show="dialogState.show"
+
+        :content="dialogState.content"
         :cancel-color="dialogState.cancelColor"
         :cancel-text="dialogState.cancelText"
+
         :confirm-color="dialogState.confirmColor"
         :confirm-text="dialogState.confirmText"
-        :content="dialogState.content"
+
         :content-color="dialogState.contentColor"
         :show-cancel="dialogState.showCancel"
+
         :title="dialogState.title"
         :title-color="dialogState.titleColor"
+
         :disable-cancel="dialogState.disableCancel"
         :disable-confirm="dialogState.disableConfirm"
+
         @cancel="dialogState.onCancel"
         @confirm="dialogState.onConfirm"
     />
