@@ -6,7 +6,7 @@ export default { name: 'app-dialog' };
     lang="ts"
     setup
 >
-import { useVModel } from '@/hooks/common-hooks';
+import { useVModel } from '@/hooks/use-lib';
 import v from '@/assets/styles/common-variable.scss';
 
 

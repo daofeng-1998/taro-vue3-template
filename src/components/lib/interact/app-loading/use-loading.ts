@@ -1,6 +1,12 @@
 import { SYMBOL_LOADING } from '@/components/lib/script/Symbols';
 import { Ref } from 'vue';
-import { useComponentState } from '@/components/lib/script/component-states';
+import { setNewState, useComponentState } from '@/components/lib/script/component-states';
+
+setNewState(SYMBOL_LOADING, () => ({
+    show: false,
+    activated: false,
+    msg: ''
+}));
 
 export const useLoading = (): {
     show(msg?: string)

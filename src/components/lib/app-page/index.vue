@@ -12,11 +12,10 @@ import AppDialog from '@/components/lib/interact/app-dialog/index.vue';
 import { useComponentState } from '@/components/lib/script/component-states';
 import { SYMBOL_DIALOG, SYMBOL_LOADING } from '@/components/lib/script/Symbols';
 
-console.log('app-page');
 
 const loadingState = useComponentState<ILoadingState>(SYMBOL_LOADING);
 const dialogState = useComponentState<IDialogSync>(SYMBOL_DIALOG);
-console.log('app-page', dialogState.value);
+
 </script>
 
 <!--页面包裹容器-->

@@ -1,7 +1,7 @@
 import { HttpCore } from '@/lib/network/http-request/http-core';
-import type { HttpRequest } from '@/lib/network/http-request/@types-http';
 import { HttpError } from '@/lib/network/http-request/errors/http-error';
 import { asyncRequest } from '@/utils/AsyncAPI';
+import type { HttpRequest } from '@/lib/network/http-request/http-request';
 
 const http = HttpCore.create(asyncRequest as HttpRequest.IAdaptor);
 

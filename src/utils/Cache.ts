@@ -1,3 +1,6 @@
+/**
+ * 临时存取缓存数据，可用于页面跳转时传递大量数据，存入的数据仅可被读取一次，而后将会销毁
+ */
 class Cache {
     private cachePool: Map<string, any> = new Map<string, any>();
 

@@ -1,4 +1,4 @@
-import type { HttpRequest } from '@/lib/network/http-request/@types-http';
+import type { HttpRequest } from '@/lib/network/http-request/http-request';
 import HttpInterceptor from '@/lib/network/http-request/http-interceptor';
 import { HttpError } from '@/lib/network/http-request/errors/http-error';
 
@@ -56,7 +56,6 @@ export class HttpCore {
                 httpError.options = options;
                 return httpError;
             });
-
     }
 
     /**
@@ -82,7 +81,7 @@ export class HttpCore {
         let promise = Promise.resolve(finalOptions); // 链条第一环，传入请求配置信息
 
         // 连上请求拦截器
-        this.interceptor.request.forEach(handle => {
+        this.interceptor.request.each(handle => {
             // @ts-ignore
             promise = promise.then(handle.fulfilled, handle.rejected);
         });
@@ -91,7 +90,7 @@ export class HttpCore {
         promise = promise.then(this.dispatchRequest.bind(this));
 
         // 连接上响应拦截器
-        this.interceptor.response.forEach(handle => {
+        this.interceptor.response.each(handle => {
             // @ts-ignore
             promise = promise.then(handle.fulfilled, handle.rejected);
         });

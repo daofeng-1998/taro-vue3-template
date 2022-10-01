@@ -25,11 +25,13 @@ export const cycleCallAsync = (count: number, method: Function): Function => {
     return async function (...args) {
         let counter = 0;
         do {
-            try {
-                return await method(...args);
-            } catch (error) {
-                if (++counter >= count) throw error;
-            }
+
+            const [err, res] = await to(method(...args));
+            if (err) {
+                if (++counter >= count) throw err;
+            } else
+                return res;
+
         } while (true);
     };
 };

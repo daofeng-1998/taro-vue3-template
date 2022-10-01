@@ -33,7 +33,7 @@ definePageConfig({
                 value="18616848686"
             />
             <AppPreviewItem
-                content-color="red"
+                value-color="red"
                 label="订单号"
                 value="18616848686"
             />

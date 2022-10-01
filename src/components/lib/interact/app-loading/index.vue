@@ -2,7 +2,7 @@
     setup
     lang="ts"
 >
-import { useVModel } from '@/hooks/common-hooks';
+import { useVModel } from '@/hooks/use-lib';
 
 console.log('app-loading');
 

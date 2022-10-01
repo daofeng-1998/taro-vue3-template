@@ -1,7 +1,29 @@
 import { Ref } from 'vue';
-import { getNewState, useComponentState } from '@/components/lib/script/component-states';
+import { getNewState, setNewState, useComponentState } from '@/components/lib/script/component-states';
 import { SYMBOL_DIALOG } from '@/components/lib/script/Symbols';
 
+setNewState(SYMBOL_DIALOG, () => ({
+    activated: false,
+    title: '',
+    titleColor: '',
+    content: '',
+    contentColor: '',
+    show: false,
+    showCancel: false,
+    cancelText: '取消',
+    cancelColor: undefined,
+    confirmColor: undefined,
+    confirmText: '确定',
+    disableConfirm: false,
+    disableCancel: false,
+    onConfirm: undefined,
+    onCancel: undefined
+}));
+
+/**
+ * dialog控制器
+ * @param state
+ */
 const newController = (state: Ref<IDialogSync>): IDialogControl => {
 
     const resetState = () => {
@@ -11,6 +33,10 @@ const newController = (state: Ref<IDialogSync>): IDialogControl => {
     };
 
     return {
+        /**
+         * 更改dialog状态
+         * @param newState
+         */
         setState(newState: IDialogBase) {
             Object.assign<IDialogSync, IDialogBase>(state.value, newState);
         },
