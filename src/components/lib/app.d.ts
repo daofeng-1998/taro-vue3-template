@@ -30,6 +30,12 @@ interface INotifyState extends IBaseState, IVisible, IMsg {
 interface ILoadingState extends IBaseState, IVisible, IMsg {
 }
 
+interface IContentType {
+    TEXT
+    HTML
+    SLOT
+}
+
 interface IDialogBase {
     /** 标题 */
     title?: string
@@ -39,6 +45,8 @@ interface IDialogBase {
     content?: string
     /** 内容字体颜色 */
     contentColor?: string
+    /** 内容类型 */
+    contentType?: keyof IContentType
     /** 是否显示取消按钮 */
     showCancel?: boolean
     /** 取消按钮文本 */

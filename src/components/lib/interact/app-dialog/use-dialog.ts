@@ -8,6 +8,7 @@ setNewState(SYMBOL_DIALOG, () => ({
     titleColor: '',
     content: '',
     contentColor: '',
+    contentType: 'TEXT',
     show: false,
     showCancel: false,
     cancelText: '取消',
@@ -18,7 +19,7 @@ setNewState(SYMBOL_DIALOG, () => ({
     disableCancel: false,
     onConfirm: undefined,
     onCancel: undefined
-}));
+} as IDialogSync));
 
 /**
  * dialog控制器
@@ -51,10 +52,12 @@ const newController = (state: Ref<IDialogSync>): IDialogControl => {
                     show: true,
                     onConfirm: () => {
                         state.value.show = false;
+                        setTimeout(resetState, 200);
                         resolve(undefined);
                     },
                     onCancel: () => {
                         state.value.show = false;
+                        setTimeout(resetState, 200);
                         reject();
                     }
                 });

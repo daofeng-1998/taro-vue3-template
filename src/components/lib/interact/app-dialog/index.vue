@@ -27,6 +27,10 @@ const props = defineProps({
         type: String,
         default: ''
     },
+    contentType: {
+        type: String,
+        default: 'TEXT'
+    },
     contentColor: {
         type: String,
         default: '#666'
@@ -83,13 +87,35 @@ const onConfirm = () => emit('confirm');
                 :style="{ color: titleColor }"
             >{{ title }}
             </div>
+
+            <!--普通文本内容-->
+            <div
+                v-if="contentType === 'TEXT'"
+                :class="s['app-dialog__content']"
+                :style="{ color: contentColor }"
+            >{{ content }}
+            </div>
+
+            <!--html富文本内容-->
+
+            <div
+                v-else-if="contentType === 'HTML'"
+                :class="s['app-dialog__content']"
+                :style="{ color: contentColor }"
+                v-html="content"
+            ></div>
+
+
+            <!--插槽-->
             <div
                 :class="s['app-dialog__content']"
                 :style="{ color: contentColor }"
+                v-else
             >
-                <template v-if="content">{{ content }}</template>
-                <slot v-else/>
+                <slot/>
             </div>
+
+
             <div :class="[s['app-dialog__buttons'], 'hairline--top']">
                 <div
                     v-if="showCancel"

@@ -35,6 +35,7 @@ const dialogState = useComponentState<IDialogSync>(SYMBOL_DIALOG);
         :content="dialogState.content"
         :cancel-color="dialogState.cancelColor"
         :cancel-text="dialogState.cancelText"
+        :content-type="dialogState.contentType"
 
         :confirm-color="dialogState.confirmColor"
         :confirm-text="dialogState.confirmText"

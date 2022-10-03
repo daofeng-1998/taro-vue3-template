@@ -56,6 +56,19 @@ const showDialog = () => {
     // dialog.showCancel('谢谢');
 };
 
+const onRichDialog = () => {
+    dialog.show({
+        title: '富文本展示',
+        contentType: 'HTML',
+        content: '' +
+            '<img mode="widthFix" style="width: 100%" src="https://www.baidu.com/img/pc_d421b05ca87d7884081659a6e6bdfaaa.png"/>' +
+            '<video style="width: 100%"  src="https://vd2.bdstatic.com/mda-nj225vh0nfbdrr8g/sc/cae_h264/1664761364992520146/mda-nj225vh0nfbdrr8g.mp4?v_from_s=hkapp-haokan-nanjing&auth_key=1664771349-0-0-51d100bf4a2fa4c88acb08288767528d&bcevod_channel=searchbox_feed&pd=1&cd=0&pt=3&logid=3549006384&vid=5556211304135979830&abtest=&klogid=3549006384"></video>',
+        showCancel: true,
+        cancelText: '谢谢',
+        confirmText: '马上加衣服'
+    });
+};
+
 </script>
 
 <template>
@@ -65,6 +78,11 @@ const showDialog = () => {
                 is-link
                 title="对话框dialog"
                 @click="showDialog"
+            />
+            <nut-cell
+                is-link
+                title="富文本loading"
+                @click="onRichDialog"
             />
             <nut-cell
                 is-link
