@@ -1,18 +1,45 @@
 import { showModal } from '@tarojs/taro';
 
+type APIOption<R, ER> = {
+    success?: (r: R) => void;
+    fail?: (r: ER) => void;
+}
+
+/**
+ * node大哥提供的优秀promise转化方案
+ * @param api
+ */
+export const promisify = <P extends object, R, ER>(api: (option?: P & APIOption<R, ER>) => any) => {
+    return (options?: Omit<P, 'success' | 'fail'>) => {
+        return new Promise<R>((resolve, reject) => {
+            // @ts-ignore
+            api({
+                ...options,
+                success: resolve,
+                fail: reject,
+            });
+        });
+    };
+};
+
+
 /**
  * 将回调形式的异步方法转为Promise，对应的success回调会指向resolve，fail指向reject
  * @param method
  */
-export const toPromise = (method: Function) => {
-    return function (options) {
-        return new Promise((resolve, reject) => {
+export const toPromise = <O extends object, R, ER>(
+    method: (options?: O & {
+        success?: (r: R) => void;
+        fail?: (r: ER) => void;
+    }) => any
+) => {
+    return (options?: Omit<O, 'success' | 'fail'>) => {
+        return new Promise<R>((resolve, reject) => {
+            // @ts-ignore
             method({
                 ...options,
                 success: resolve,
-                fail: (error) => {
-                    reject(error.errMsg ? new Error(error.errMsg) : error);
-                }
+                fail: reject
             });
         });
     };

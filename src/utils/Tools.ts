@@ -63,7 +63,6 @@ export const formatDate = (date: Date | string, fmt: string = 'yyyy-MM-dd HH:mm:
     }
 };
 
-
 //生成从minNum到maxNum的随机数
 export const random = (...args: number[]) => {
     const minNum = args[0];
