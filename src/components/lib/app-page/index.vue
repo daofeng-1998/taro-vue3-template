@@ -11,7 +11,9 @@ import AppLoading from '@/components/lib/interact/app-loading/index.vue';
 import AppDialog from '@/components/lib/interact/app-dialog/index.vue';
 import { useComponentState } from '@/components/lib/script/component-states';
 import { SYMBOL_DIALOG, SYMBOL_LOADING } from '@/components/lib/script/Symbols';
+import { useDialog } from '@/components/lib/interact/app-dialog/use-dialog';
 
+useDialog();
 
 const loadingState = useComponentState<ILoadingState>(SYMBOL_LOADING);
 const dialogState = useComponentState<IDialogSync>(SYMBOL_DIALOG);

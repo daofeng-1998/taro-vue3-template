@@ -1,10 +1,20 @@
 import { useInstanceDataWithDefault } from '@/components/lib/script/component-tool';
-import { Ref } from 'vue';
+import type { Ref } from 'vue';
+import { SYMBOL_DIALOG, SYMBOL_LOADING } from '@/components/lib/script/Symbols';
+import { newLoadingState } from '@/components/lib/interact/app-loading/use-loading';
+import { newDialogState } from '@/components/lib/interact/app-dialog/use-dialog';
+
+
+console.log(newLoadingState);
+console.log(newDialogState);
 
 /**
  * 状态容器
  */
-const states = {};
+const states = {
+    [SYMBOL_DIALOG]: newDialogState,
+    [SYMBOL_LOADING]: newLoadingState,
+};
 
 /**
  * 设置一个新状态工厂函数

@@ -90,29 +90,16 @@ const onConfirm = () => emit('confirm');
 
             <!--普通文本内容-->
             <div
-                v-if="contentType === 'TEXT'"
+
                 :class="s['app-dialog__content']"
                 :style="{ color: contentColor }"
-            >{{ content }}
-            </div>
-
-            <!--html富文本内容-->
-
-            <div
-                v-else-if="contentType === 'HTML'"
-                :class="s['app-dialog__content']"
-                :style="{ color: contentColor }"
-                v-html="content"
-            ></div>
-
-
-            <!--插槽-->
-            <div
-                :class="s['app-dialog__content']"
-                :style="{ color: contentColor }"
-                v-else
             >
-                <slot/>
+                <template v-if="contentType === 'TEXT'">{{ content }}</template>
+                <div
+                    v-else-if="contentType === 'HTML'"
+                    v-html="content"
+                ></div>
+                <slot v-else/>
             </div>
 
 
@@ -178,7 +165,7 @@ const onConfirm = () => emit('confirm');
             text-align: center;
             padding: 0 $space-normal $space-large;
             max-height: 60vh;
-            overflow: scroll;
+            overflow-y: scroll;
         }
 
         & &__buttons {

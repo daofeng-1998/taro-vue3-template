@@ -1,7 +1,9 @@
 import Taro from '@tarojs/taro';
 
 import { Router } from '@/utils/utils';
+import cache from '@/utils/Cache';
 
+export const ROUTE_PARAMS_KEY = 'ROUTE_PARAMS_KEY';
 
 /**
  * 获取当前页面
@@ -13,25 +15,45 @@ const getCurrentPath = (): string | undefined => Taro.getCurrentInstance().route
  */
 const hooks: Array<Router.Hook> = [];
 
-
 /**
  * 挂载钩子函数
  * @param func
  */
-const hook = (func: Function) => {
+const hook = <R>(func: (url?: string) => Promise<R>) => {
 
-    return (url: string) => {
+    return <D extends object>(url: string, data?: D): Promise<R> => {
         const currentPath = getCurrentPath();
+        console.log(`跳转：${url}`);
 
-        let i = 0;
+        return new Promise<R>((resolve) => {
 
-        const check = () => {
-            if (i >= hooks.length) return func(url); // 已经没有钩子了，调用原函数
+            let i = 0;
 
-            hooks[i++](currentPath, url, (url: string) => url ? go(url) : check());
-        };
+            const check = () => {
+                if (i >= hooks.length) {
+                    if (url.includes('?')) {
+                        url = url.concat(`${url.endsWith('&') ? '' : '&'}${ROUTE_PARAMS_KEY}=${cache.set(data)}`);
+                    } else {
+                        url = url.concat(`?${ROUTE_PARAMS_KEY}=${cache.set(data)}`);
+                    }
+                    console.log(url);
+                    return func(url).then(resolve);
+                }// 已经没有钩子了，调用原函数
 
-        return check();
+                hooks[i++](currentPath, url, (url: string) => {
+
+                    if (url) {
+
+                        go(url);
+
+                    } else {
+                        check();
+                    }
+                });
+            };
+
+            check();
+        });
     };
 };
 
@@ -57,9 +79,9 @@ export const go = hook((url: string) => {
  * 回退
  * @param count
  */
-export const back = hook((count: number) => {
+export const back = (count: number) => {
     return Taro.navigateBack({ delta: count });
-});
+};
 
 /**
  * 重定向
@@ -85,3 +107,8 @@ export const tab = hook((url: string) => {
     return Taro.switchTab({ url });
 });
 
+export const goAny = <D extends object>(url: string, data?: D) => {
+    go(url, data)
+        .catch(() => tab(url, data))
+        .catch(() => redirect(url, data));
+};

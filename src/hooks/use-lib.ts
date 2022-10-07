@@ -1,4 +1,7 @@
-import { computed, ComputedRef } from 'vue';
+import { computed, ComputedRef, reactive, Ref, ref, UnwrapNestedRefs } from 'vue';
+import { useRouter } from '@tarojs/taro';
+import cache from '@/utils/Cache';
+import { ROUTE_PARAMS_KEY } from '@/utils/Router';
 
 export const useVModel = <T>(props: Object, key: string, emit: Function) => {
     return computed<T>({
@@ -25,4 +28,33 @@ export const useSumForList = <T>(
             return pre + isFunc ? field(item) : (isEmpty ? item : item[field]);
         }, 0);
     });
+};
+
+/**
+ * 使用一个表单数据对象
+ * @param newData
+ */
+export const useFormData = <D extends object, R>(newData: () => D): [UnwrapNestedRefs<D>, () => void, Ref<R | null>] => {
+    const data = reactive(newData());
+
+    const reset = () => {
+        Object.assign(data, newData());
+    };
+    return [data, reset, ref(null)];
+};
+
+
+export const useRouteParams = () => {
+    const state = reactive({});
+    const { params } = useRouter();
+
+    if (params[ROUTE_PARAMS_KEY]) {
+        const data = cache.get(params[ROUTE_PARAMS_KEY]);
+        Object.assign(state, params, data);
+
+        delete state[ROUTE_PARAMS_KEY];
+        delete state['$taroTimestamp'];
+    }
+
+    return state;
 };

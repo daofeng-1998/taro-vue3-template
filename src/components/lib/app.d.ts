@@ -67,15 +67,24 @@ interface IDialogBase {
 interface IDialogControl {
 
     /** 常规化配置 */
-    show(options: IDialogBase): Promise<undefined>
+    show(options: IDialogBase): Promise<unknown>
 
     /** 无cancel，confirmText为"确定" */
-    showContent(content: string, title?: string): Promise<undefined>
+    showContent(content: string, title?: string): Promise<unknown>
 
     /** 带cancel，confirmText为"确定"，cancelText为“取消” */
-    showCancel(content: string, title?: string): Promise<undefined>
+    showCancel(content: string, title?: string): Promise<unknown>
 
-    setState(newState: IDialogBase)
+    /**
+     * 手动设置状态
+     * @param newState
+     */
+    setState(newState: IDialogBase): void
+
+    /**
+     * 主动关闭
+     */
+    close(): void
 }
 
 interface IDialogSync extends IBaseState, IDialogBase, IVisible, IController<IDialogControl> {
