@@ -2,6 +2,8 @@ import { computed, ComputedRef, reactive, Ref, ref, UnwrapNestedRefs } from 'vue
 import { useRouter } from '@tarojs/taro';
 import cache from '@/utils/Cache';
 import { ROUTE_PARAMS_KEY } from '@/utils/Router';
+import { BASE_TYPE } from '@/utils/Tools';
+import { FormData } from '@/hooks/hooks';
 
 export const useVModel = <T>(props: Object, key: string, emit: Function) => {
     return computed<T>({
@@ -43,6 +45,44 @@ export const useFormData = <D extends object, R>(newData: () => D): [UnwrapNeste
     return [data, reset, ref(null)];
 };
 
+export const useForm = <F extends object>(data: F): [UnwrapNestedRefs<FormData<F>>] => {
+
+    // 基本数据类型 + function
+    const dataTypes = BASE_TYPE.concat('function');
+
+    const getDefaultValue = (ele) => {
+
+        if (BASE_TYPE.includes(typeof ele)) {
+            return ele; // 基础类型，直接返回
+        } else if (typeof ele === 'function') {
+            return ele(); // 数据工厂，调用获取新的值
+        } else {
+            return undefined; // 空
+        }
+    };
+
+    const newData = () => {
+        const newObj = {};
+        for (const key in data) {
+
+            const type = typeof data[key]; // 当前成员类型
+
+            if (dataTypes.includes(type)) {
+                // @ts-ignore
+                newObj[key] = getDefaultValue(data[key]);
+            } else {
+                // @ts-ignore
+                newObj[key] = getDefaultValue(data[key]['default']);
+            }
+        }
+        return newObj;
+    };
+
+    const formData = reactive(newData());
+
+    // @ts-ignore
+    return [formData];
+};
 
 export const useRouteParams = () => {
     const state = reactive({});

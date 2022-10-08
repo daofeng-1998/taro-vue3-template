@@ -4,6 +4,10 @@
 import Taro from '@tarojs/taro';
 
 export const globalEnv = window || self;
+/**
+ * 基本数据类型
+ */
+export const BASE_TYPE = ['string', 'number', 'bigint', 'undefined', 'symbol', 'null'];
 
 /**
  * 格式化数字，默认保留两位小数
@@ -64,17 +68,11 @@ export const formatDate = (date: Date | string, fmt: string = 'yyyy-MM-dd HH:mm:
 };
 
 //生成从minNum到maxNum的随机数
-export const random = (...args: number[]) => {
-    const minNum = args[0];
-    const maxNum = args[1];
-
-    switch (args.length) {
-        case 1:
-            return Math.floor(Math.random() * minNum + 1);
-        case 2:
-            return Math.floor(Math.random() * (maxNum - minNum + 1) + minNum);
-        default:
-            return 0;
+export const random = (min: number, max?: number) => {
+    if (typeof max === 'number') {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    } else {
+        return Math.floor(Math.random() * min + 1);
     }
 };
 
