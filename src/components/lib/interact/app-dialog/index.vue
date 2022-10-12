@@ -1,7 +1,3 @@
-<script lang="ts">
-export default { name: 'app-dialog' };
-</script>
-
 <script
     lang="ts"
     setup
@@ -9,60 +5,59 @@ export default { name: 'app-dialog' };
 import { useVModel } from '@/hooks/use-lib';
 import v from '@/assets/styles/common-variable.scss';
 
-
 const props = defineProps({
     show: {
         type: Boolean,
-        default: false
+        default: false,
     },
     title: {
         type: String,
-        default: ''
+        default: '',
     },
     titleColor: {
         type: String,
-        default: '#333'
+        default: '#333',
     },
     content: {
         type: String,
-        default: ''
+        default: '',
     },
     contentType: {
         type: String,
-        default: 'TEXT'
+        default: 'TEXT',
     },
     contentColor: {
         type: String,
-        default: '#666'
+        default: '#666',
     },
     showCancel: {
         type: Boolean,
-        default: false
+        default: false,
     },
     cancelText: {
         type: String,
-        default: '取消'
+        default: '取消',
     },
     cancelColor: {
         type: String,
-        default: '#333'
+        default: '#333',
     },
     confirmText: {
         type: String,
-        default: '确定'
+        default: '确定',
     },
     disableCancel: {
         type: Boolean,
-        default: false
+        default: false,
     },
     disableConfirm: {
         type: Boolean,
-        default: false
+        default: false,
     },
     confirmColor: {
         type: String,
-        default: v.mainColor
-    }
+        default: v.mainColor,
+    },
 });
 
 const emit = defineEmits(['cancel', 'confirm', 'update:show']);
@@ -71,7 +66,10 @@ const vShow = useVModel<Boolean>(props, 'show', emit);
 
 const onCancel = () => emit('cancel');
 const onConfirm = () => emit('confirm');
+</script>
 
+<script lang="ts">
+export default { name: 'AppDialog' };
 </script>
 
 <template>
@@ -79,53 +77,61 @@ const onConfirm = () => emit('confirm');
         v-model:visible="vShow"
         :class="s['app-dialog__overlay']"
         :close-on-click-overlay="false"
-        :duration="0.1"
+        :duration="0"
     >
         <div :class="s['app-dialog']">
             <div
                 :class="s['app-dialog__title']"
                 :style="{ color: titleColor }"
-            >{{ title }}
+            >
+                {{ title }}
             </div>
 
-            <!--普通文本内容-->
+            <!-- 普通文本内容 -->
             <div
 
                 :class="s['app-dialog__content']"
                 :style="{ color: contentColor }"
             >
-                <template v-if="contentType === 'TEXT'">{{ content }}</template>
+                <template v-if="contentType === 'TEXT'">
+                    {{ content }}
+                </template>
                 <div
                     v-else-if="contentType === 'HTML'"
                     v-html="content"
-                ></div>
-                <slot v-else/>
+                />
+                <slot v-else />
             </div>
 
-
-            <div :class="[s['app-dialog__buttons'], 'hairline--top']">
+            <div
+                :class="[s['app-dialog__buttons']]"
+                class="hairline--top"
+            >
                 <div
                     v-if="showCancel"
-                    :class="[s['button-wrapper'], 'hairline--right']"
+                    :class="[s['button-wrapper']]"
+                    class="hairline--right"
                 >
                     <nut-button
-                        :class="[s['button'], s['button_cancel']]"
+                        :class="[s.button, s.button_cancel]"
                         :disabled="disableCancel"
                         block
                         :style="{ color: cancelColor }"
                         @click.stop="onCancel"
-                    >{{ cancelText }}
+                    >
+                        {{ cancelText }}
                     </nut-button>
                 </div>
 
                 <div :class="s['button-wrapper']">
                     <nut-button
-                        :class="[s['button'], s['button_confirm']]"
+                        :class="[s.button, s.button_confirm]"
                         :disabled="disableConfirm"
                         block
                         :style="{ color: confirmColor }"
                         @click.stop="onConfirm"
-                    >{{ confirmText }}
+                    >
+                        {{ confirmText }}
                     </nut-button>
                 </div>
             </div>
@@ -150,7 +156,6 @@ const onConfirm = () => emit('confirm');
         transform: translate(-50%, -50%);
         border-radius: $space-small;
         overflow: hidden;
-
 
         &__overlay {
         }

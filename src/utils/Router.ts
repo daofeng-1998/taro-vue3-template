@@ -1,6 +1,5 @@
 import Taro from '@tarojs/taro';
-
-import { Router } from '@/utils/utils';
+import type { Router } from '@/utils/utils';
 import cache from '@/utils/Cache';
 
 export const ROUTE_PARAMS_KEY = 'ROUTE_PARAMS_KEY';
@@ -20,35 +19,30 @@ const hooks: Array<Router.Hook> = [];
  * @param func
  */
 const hook = <R>(func: (url?: string) => Promise<R>) => {
-
     return <D extends object>(url: string, data?: D): Promise<R> => {
         const currentPath = getCurrentPath();
         console.log(`跳转：${url}`);
 
         return new Promise<R>((resolve) => {
-
             let i = 0;
 
             const check = () => {
                 if (i >= hooks.length) {
-                    if (url.includes('?')) {
+                    if (url.includes('?'))
                         url = url.concat(`${url.endsWith('&') ? '' : '&'}${ROUTE_PARAMS_KEY}=${cache.set(data)}`);
-                    } else {
+                    else
                         url = url.concat(`?${ROUTE_PARAMS_KEY}=${cache.set(data)}`);
-                    }
+
                     console.log(url);
                     return func(url).then(resolve);
                 }// 已经没有钩子了，调用原函数
 
                 hooks[i++](currentPath, url, (url: string) => {
-
-                    if (url) {
-
+                    if (url)
+                        // eslint-disable-next-line @typescript-eslint/no-use-before-define
                         go(url);
-
-                    } else {
+                    else
                         check();
-                    }
                 });
             };
 
@@ -64,7 +58,8 @@ const hook = <R>(func: (url?: string) => Promise<R>) => {
 export const addRouterHook = (hook: Router.Hook) => {
     hooks.push(hook);
     const currentPath = getCurrentPath();
-    hook(undefined, currentPath as string, (url) => url && go(url));
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    hook(undefined, currentPath as string, url => url && go(url));
 };
 
 /**

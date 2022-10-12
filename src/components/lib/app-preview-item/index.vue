@@ -1,11 +1,9 @@
-<script lang="ts">
-export default { name: 'app-preview-item' };
-</script>
 <script
     lang="ts"
     setup
 >
-import { computed, ComputedRef, inject } from 'vue';
+import type { ComputedRef } from 'vue';
+import { computed, inject } from 'vue';
 import Taro from '@tarojs/taro';
 
 defineProps({
@@ -13,14 +11,17 @@ defineProps({
     value: String,
     valueColor: {
         type: String,
-        default: '#000'
-    }
+        default: '#000',
+    },
 });
 
-const labelWidth =
-    inject<ComputedRef<string>>('label-width')
+const labelWidth
+    = inject<ComputedRef<string>>('label-width')
     || computed(() => Taro.pxTransform(200));
+</script>
 
+<script lang="ts">
+export default { name: 'AppPreviewItem' };
 </script>
 
 <template>
@@ -32,7 +33,8 @@ const labelWidth =
             <view
                 v-if="label"
                 class="app-preview-item__label-text"
-            >{{ label }}
+            >
+                {{ label }}
             </view>
             <slot
                 v-else
@@ -44,7 +46,9 @@ const labelWidth =
             :style="{ color: valueColor }"
             class="app-preview-item__content"
         >
-            <template v-if="value">{{ value }}</template>
+            <template v-if="value">
+                {{ value }}
+            </template>
             <slot
                 v-else
                 name="content"
@@ -74,5 +78,4 @@ const labelWidth =
         text-align: right;
     }
 }
-
 </style>

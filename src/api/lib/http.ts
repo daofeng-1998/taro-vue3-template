@@ -15,21 +15,19 @@ http.interceptor.request.use((options: HttpRequest.IRequestOptions) => {
 
     // options.url = 'https://www.baidu.com/111111.html';
 
-    options.header['token'] = '123';
+    options.header.token = '123';
 
     console.log(options);
     return options;
-
 });
 
 http.interceptor.request.use((value: HttpRequest.IRequestOptions) => {
     console.log('-------------请求钩子2 fulfilled');
 
-    value.header!['sign'] = '456';
+    value.header!.sign = '456';
 
     console.log(value);
     return value;
-
 });
 
 http.interceptor.response.use(async (response: HttpRequest.ISuccessResult) => {
@@ -49,9 +47,7 @@ http.interceptor.response.use((value: HttpRequest.ISuccessResult) => {
     console.log(value);
 
     return value;
-
 }, (error: HttpError) => {
-
     console.log('-------------响应钩子1 rejected');
     console.log('发生了异常');
     console.dir(error);

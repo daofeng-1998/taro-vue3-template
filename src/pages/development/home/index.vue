@@ -1,17 +1,16 @@
-<script lang="ts">
-export default { name: 'home' };
-</script>
 <script
     lang="ts"
     setup
 >
+import Taro from '@tarojs/taro';
+import { ref } from 'vue';
 import AppPage from '@/components/lib/app-page/index.vue';
 import { er } from '@/utils/AsyncTool';
 import { useLoading } from '@/components/lib/interact/app-loading/use-loading';
 import { useDialog } from '@/components/lib/interact/app-dialog/use-dialog';
-import Taro from '@tarojs/taro';
 import { go, goAny } from '@/utils/Router';
 import { useFormData } from '@/hooks/use-lib';
+import AppGoodsCard from '@/components/lib/app-goods-card/index.vue';
 
 definePageConfig({
     navigationBarTitleText: '首页',
@@ -37,16 +36,16 @@ const showDialog = () => {
         cancelText: '不需要',
         cancelColor: 'red',
         confirmText: '谢谢',
-        confirmColor: 'blue'
+        confirmColor: 'blue',
     }).then(() => {
         Taro.showToast({
             title: '点击了确认',
-            icon: 'none'
+            icon: 'none',
         });
     }).catch(() => {
         Taro.showToast({
             title: '点击了取消',
-            icon: 'none'
+            icon: 'none',
         });
     });
 };
@@ -55,33 +54,52 @@ const onRichDialog = () => {
     dialog.show({
         title: '富文本展示',
         contentType: 'HTML',
-        content: '' +
-            '<img mode="widthFix" style="width: 100%" src="https://www.baidu.com/img/pc_d421b05ca87d7884081659a6e6bdfaaa.png"/>' +
-            '<video style="width: 100%"  src="https://vd2.bdstatic.com/mda-nj225vh0nfbdrr8g/sc/cae_h264/1664761364992520146/mda-nj225vh0nfbdrr8g.mp4?v_from_s=hkapp-haokan-nanjing&auth_key=1664771349-0-0-51d100bf4a2fa4c88acb08288767528d&bcevod_channel=searchbox_feed&pd=1&cd=0&pt=3&logid=3549006384&vid=5556211304135979830&abtest=&klogid=3549006384"></video>',
+        content: ''
+            + '<img mode="widthFix" style="width: 100%" src="https://www.baidu.com/img/pc_d421b05ca87d7884081659a6e6bdfaaa.png"/>'
+            + '<video style="width: 100%"  src="https://vd2.bdstatic.com/mda-nj225vh0nfbdrr8g/sc/cae_h264/1664761364992520146/mda-nj225vh0nfbdrr8g.mp4?v_from_s=hkapp-haokan-nanjing&auth_key=1664771349-0-0-51d100bf4a2fa4c88acb08288767528d&bcevod_channel=searchbox_feed&pd=1&cd=0&pt=3&logid=3549006384&vid=5556211304135979830&abtest=&klogid=3549006384"></video>',
         showCancel: true,
         cancelText: '谢谢',
-        confirmText: '马上加衣服'
+        confirmText: '马上加衣服',
     });
 };
 
 const route = {
     onRouteJump() {
-
         goAny('/pages/development/route/index?code=123465789798', {
             name: 'feng',
             age: 18,
-            address: '的hi发客户看技术按时艰苦的贺卡上撒娇电话卡'
+            address: '的hi发客户看技术按时艰苦的贺卡上撒娇电话卡',
         });
-    }
+    },
 };
-
 
 const [formData, reset] = useFormData(() => ({
     username: '',
-    password: ''
+    password: '',
 }));
 
+const smsDisabled = ref(false);
+const smsText = ref('发送验证码');
 
+const onSms = () => {
+    let i = 59;
+    smsDisabled.value = true;
+    smsText.value = `${i--}s`;
+    const interval = setInterval(() => {
+        Taro.nextTick(() => {
+            smsText.value = `${i}s`;
+            if (i-- < 1) {
+                smsDisabled.value = false;
+                clearInterval(interval);
+                smsText.value = '发送验证码';
+            }
+        });
+    }, 1000);
+};
+</script>
+
+<script lang="ts">
+export default { name: 'Home' };
 </script>
 
 <template>
@@ -117,7 +135,6 @@ const [formData, reset] = useFormData(() => ({
                 @click="route.onRouteJump"
             />
         </nut-cell-group>
-
         <nut-cell-group title="数据组件">
             <nut-cell
                 is-link
@@ -125,44 +142,48 @@ const [formData, reset] = useFormData(() => ({
                 @click="go('/pages/data/preview/index')"
             />
         </nut-cell-group>
-        <nut-cell-group title="表单测试">
-            <nut-form>
-                <nut-form-item>
-                    <nut-input
-                        v-model="formData.username"
-                        :border="false"
-                        label="用户名"
-                        placeholder="请输入用户名"
-                    />
-                </nut-form-item>
 
-                <nut-form-item>
-                    <nut-input
-                        v-model="formData.password"
-                        :border="false"
-                        label="用户名"
-                        placeholder="请输入密码"
-                    />
-                </nut-form-item>
+        <!--
+            :image-height="Taro.pxTransform(130)"
+        -->
+        <AppGoodsCard
+            :name-line="2"
+            :price="8.12"
+            direction="horizontal"
+            goods-name="大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹闸蟹大闸蟹大闸蟹大闸蟹大闸蟹闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹"
+            image-mode="aspectFill"
+            image-width="25%"
+            @click-image="dialog.showContent('点击了图片')"
+        >
+            <template #bottom>
+                sadasdas
+            </template>
+            <template #count>
+                <nut-button
+                    size="mini"
+                    type="primary"
+                >
+                    加
+                </nut-button>
+            </template>
+            <template #footer>
+                订单号：165464646
+            </template>
+        </AppGoodsCard>
 
-                <nut-form-item>
-                    <nut-button
-                        type="danger"
-                        @click="reset"
-                    >重置
-                    </nut-button>
-                    <nut-button
-                        type="primary"
-                        @click="dialog.showContent(JSON.stringify(formData))"
-                    >提交
-                    </nut-button>
-                </nut-form-item>
-            </nut-form>
+        <nut-cell-group title="工具测试">
+            <nut-cell title="倒计时">
+                <nut-button
+                    :disabled="smsDisabled"
+                    size="small"
+                    @click="onSms"
+                >
+                    {{ smsText }}
+                </nut-button>
+            </nut-cell>
         </nut-cell-group>
-
     </AppPage>
 </template>
-
 
 <style>
 

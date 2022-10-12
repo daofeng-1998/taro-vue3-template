@@ -46,13 +46,14 @@
         "vue": "^3.2.24"
     },
     "devDependencies": {
-        "@vue/babel-plugin-jsx": "^1.1.1",
+        "@antfu/eslint-config": "^0.27.0",
         "@babel/core": "^7.8.0",
         "@tarojs/mini-runner": "3.4.13",
         "@tarojs/webpack-runner": "3.4.13",
         "@types/webpack-env": "^1.13.6",
         "@typescript-eslint/eslint-plugin": "^5.20.0",
         "@typescript-eslint/parser": "^5.20.0",
+        "@vue/babel-plugin-jsx": "^1.1.1",
         "babel-plugin-import": "^1.13.5",
         "babel-preset-taro": "3.4.13",
         "eslint": "^8.12.0",

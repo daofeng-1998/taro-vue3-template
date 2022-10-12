@@ -1,6 +1,3 @@
-<script lang="ts">
-export default { name: 'preview' };
-</script>
 <script
     lang="ts"
     setup
@@ -9,9 +6,12 @@ import AppPreview from '@/components/lib/app-preview/index.vue';
 import AppPreviewItem from '@/components/lib/app-preview-item/index.vue';
 
 definePageConfig({
-    navigationBarTitleText: '表单预览'
+    navigationBarTitleText: '表单预览',
 });
+</script>
 
+<script lang="ts">
+export default { name: 'Preview' };
 </script>
 
 <template>
@@ -41,14 +41,13 @@ definePageConfig({
     </nut-cell-group>
     <nut-cell-group title="底部插槽">
         <AppPreview label="详细信息">
-
             <AppPreviewItem
                 label="账号"
                 value="181684616"
             />
             <AppPreviewItem label="账号状态">
                 <template #content>
-                    <switch :checked="true"/>
+                    <switch :checked="true" />
                 </template>
             </AppPreviewItem>
             <AppPreviewItem
@@ -72,12 +71,14 @@ definePageConfig({
                 <view class="slot-footer-wrapper">
                     <button
                         class="a-button"
-                    >修改
+                    >
+                        修改
                     </button>
                     <button
                         class="a-button"
                         type="warn"
-                    >删除
+                    >
+                        删除
                     </button>
                 </view>
             </template>

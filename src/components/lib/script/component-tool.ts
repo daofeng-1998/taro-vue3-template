@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro';
-import { inject, provide, Ref, ref } from 'vue';
+import type { Ref } from 'vue';
+import { inject, provide, ref } from 'vue';
 
 /** 使用当前实例 */
 export const useInstance = (): Taro.PageInstance | null => {
@@ -9,7 +10,7 @@ export const useInstance = (): Taro.PageInstance | null => {
 /** 从当前实例取出数据，如果当前实例没有该数据，则产生一个默认数据并注入当前实例 */
 export const useInstanceDataWithDefault = <T>(
     key: string | symbol,
-    defaultSate: () => T
+    defaultSate: () => T,
 ) => {
     let state = inject<Ref<T>>(key);
 

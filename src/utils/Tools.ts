@@ -7,7 +7,7 @@ export const globalEnv = window || self;
 /**
  * 基本数据类型
  */
-export const BASE_TYPE = ['string', 'number', 'bigint', 'undefined', 'symbol', 'null'];
+export const BASE_TYPE = ['string', 'number', 'bigint', 'boolean', 'undefined', 'symbol', 'null'];
 
 /**
  * 格式化数字，默认保留两位小数
@@ -15,10 +15,9 @@ export const BASE_TYPE = ['string', 'number', 'bigint', 'undefined', 'symbol', '
  * @param {int} length 要保留的小数位长度
  * @returns {string}
  */
-export const formatMoney = (number: number, length: number = 2): string => {
-
-    //有传递指定保留位数
-    let numberStr = number.toFixed(length);
+export const formatMoney = (number: number, length = 2): string => {
+    // 有传递指定保留位数
+    const numberStr = number.toFixed(length);
 
     const regForm = /(\d{1,3})(?=(\d{3})+(?:$|\.))/g;
     return numberStr.replace(regForm, '$1,');
@@ -30,50 +29,50 @@ export const formatMoney = (number: number, length: number = 2): string => {
  * @param fmt 格式
  * @type {int}
  */
-export const formatDate = (date: Date | string, fmt: string = 'yyyy-MM-dd HH:mm:ss'): string => {
+export const formatDate = (date: Date | string, fmt = 'yyyy-MM-dd HH:mm:ss'): string => {
     try {
-        if (!(date instanceof Date)) {
+        if (!(date instanceof Date))
             date = new Date(date);
-        }
+
         const o = {
-            'M+': date.getMonth() + 1, //月份
-            'd+': date.getDate(), //日
-            'H+': date.getHours(), //小时
-            'm+': date.getMinutes(), //分
-            's+': date.getSeconds(), //秒
-            'q+': Math.floor((date.getMonth() + 3) / 3), //季度
-            S: date.getMilliseconds() //毫秒
+            'M+': date.getMonth() + 1, // 月份
+            'd+': date.getDate(), // 日
+            'H+': date.getHours(), // 小时
+            'm+': date.getMinutes(), // 分
+            's+': date.getSeconds(), // 秒
+            'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+            'S': date.getMilliseconds(), // 毫秒
         };
 
         if (/(y+)/.test(fmt)) {
             fmt = fmt.replace(
                 RegExp.$1,
-                (date.getFullYear() + '').substr(4 - RegExp.$1.length)
+                (`${date.getFullYear()}`).substr(4 - RegExp.$1.length),
             );
         }
         for (const k in o) {
-            if (new RegExp('(' + k + ')').test(fmt)) {
+            if (new RegExp(`(${k})`).test(fmt)) {
                 fmt = fmt.replace(
                     RegExp.$1,
                     RegExp.$1.length === 1
                         ? o[k]
-                        : ('00' + o[k]).substr(('' + o[k]).length)
+                        : (`00${o[k]}`).substr((`${o[k]}`).length),
                 );
             }
         }
         return fmt;
-    } catch {
+    }
+    catch {
         return '';
     }
 };
 
-//生成从minNum到maxNum的随机数
+// 生成从minNum到maxNum的随机数
 export const random = (min: number, max?: number) => {
-    if (typeof max === 'number') {
+    if (typeof max === 'number')
         return Math.floor(Math.random() * (max - min + 1) + min);
-    } else {
+    else
         return Math.floor(Math.random() * min + 1);
-    }
 };
 
 /**
@@ -86,8 +85,8 @@ export const exactInterval = (func: Function, delay: number): () => boolean => {
 
     let preTime = -1;
     const handle = (time: number): void => {
-
-        if (preTime === -1) preTime = time;
+        if (preTime === -1)
+            preTime = time;
 
         if (time - preTime >= delay) {
             preTime = time;
@@ -100,4 +99,9 @@ export const exactInterval = (func: Function, delay: number): () => boolean => {
     requestAnimationFrame(handle);
 
     return () => stop = true;
+};
+
+/** 判断是否为空对象 */
+export const isEmptyObject = (obj: object) => {
+    return Object.keys(obj).length === 0;
 };

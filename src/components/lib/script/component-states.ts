@@ -1,9 +1,8 @@
-import { useInstanceDataWithDefault } from '@/components/lib/script/component-tool';
 import type { Ref } from 'vue';
+import { useInstanceDataWithDefault } from '@/components/lib/script/component-tool';
 import { SYMBOL_DIALOG, SYMBOL_LOADING } from '@/components/lib/script/Symbols';
 import { newLoadingState } from '@/components/lib/interact/app-loading/use-loading';
 import { newDialogState } from '@/components/lib/interact/app-dialog/use-dialog';
-
 
 console.log(newLoadingState);
 console.log(newDialogState);

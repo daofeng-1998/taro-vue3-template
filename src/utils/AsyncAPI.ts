@@ -1,5 +1,5 @@
-import { promisify } from '@/utils/AsyncTool';
 import Taro from '@tarojs/taro';
+import { promisify } from '@/utils/AsyncTool';
 
 export const asyncRequest = promisify(Taro.request);
 

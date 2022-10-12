@@ -6,7 +6,7 @@ import { useRouteParams } from '@/hooks/use-lib';
 import AppPage from '@/components/lib/app-page/index.vue';
 
 definePageConfig({
-    navigationBarTitleText: '$END$'
+    navigationBarTitleText: '$END$',
 });
 const params = useRouteParams();
 console.log(params);

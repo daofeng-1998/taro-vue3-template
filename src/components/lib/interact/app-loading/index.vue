@@ -4,24 +4,27 @@
 >
 import { useVModel } from '@/hooks/use-lib';
 
-console.log('app-loading');
-
 const props = defineProps({
     show: {
         type: Boolean,
-        default: true
+        default: true,
     },
     msg: {
         type: String,
-        default: null
-    }
+        default: null,
+    },
 });
 
 const emit = defineEmits(['update:show']);
 
+console.log('app-loading');
+
 const vShow = useVModel<Boolean>(props, 'show', emit);
 const vMsg = useVModel<string | undefined>(props, 'msg', emit);
+</script>
 
+<script lang="ts">
+export default { name: 'AppLoading' };
 </script>
 
 <template>
@@ -34,7 +37,7 @@ const vMsg = useVModel<string | undefined>(props, 'msg', emit);
                 v-for="i in 4"
                 :key="i"
                 :class="s['app-loading_item']"
-            ></div>
+            />
         </div>
     </nut-overlay>
 </template>
@@ -43,7 +46,6 @@ const vMsg = useVModel<string | undefined>(props, 'msg', emit);
     lang="scss"
     module="s"
 >
-
 .app-loading,
 .app-loading > div {
     position: relative;

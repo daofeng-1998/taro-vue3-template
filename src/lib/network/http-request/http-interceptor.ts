@@ -1,13 +1,12 @@
 import type { Interceptor } from '@/lib/network/http-request/http-request';
 
 class HttpInterceptor {
-
     private handles: Interceptor.IHandle[] = [];
 
     public use(fulfilled: Function, rejected?: Function): void {
         const handle: Interceptor.IHandle = {
             fulfilled,
-            rejected
+            rejected,
         };
         this.handles.push(handle);
     }

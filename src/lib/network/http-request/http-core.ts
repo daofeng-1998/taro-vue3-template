@@ -18,7 +18,7 @@ export class HttpCore {
         /** 请求拦截器 */
         request: new HttpInterceptor(),
         /** 响应拦截器 */
-        response: new HttpInterceptor()
+        response: new HttpInterceptor(),
     };
 
     /**
@@ -35,27 +35,10 @@ export class HttpCore {
      * @param adaptor
      */
     public static create(adaptor: HttpRequest.IAdaptor) {
-        if (!adaptor || typeof adaptor !== 'function') {
+        if (!adaptor || typeof adaptor !== 'function')
             throw new TypeError('adaptor is not a function');
-        }
-        return new HttpCore(adaptor);
-    }
 
-    /**
-     * 派发实际请求，通过提供的适配器
-     * @param options
-     * @private
-     */
-    private dispatchRequest(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult | HttpError> {
-        return this.adaptor(options)
-            .then((res) => {
-                res.options = options;
-                return res;
-            }).catch(error => {
-                const httpError = new HttpError(error.errMsg);
-                httpError.options = options;
-                return httpError;
-            });
+        return new HttpCore(adaptor);
     }
 
     /**
@@ -63,7 +46,6 @@ export class HttpCore {
      * @param options
      */
     public request<R extends Response>(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult<R>> {
-
         let url = options.url;
         url = url.includes('://')
             ? url
@@ -75,13 +57,13 @@ export class HttpCore {
             ...options, // 本次请求的配置，覆盖默认配置
             url, // 这个url会覆盖掉前面配置中的url
         };
-        if (!finalOptions.method) finalOptions.method = 'GET';
-
+        if (!finalOptions.method)
+            finalOptions.method = 'GET';
 
         let promise = Promise.resolve(finalOptions); // 链条第一环，传入请求配置信息
 
         // 连上请求拦截器
-        this.interceptor.request.each(handle => {
+        this.interceptor.request.each((handle) => {
             // @ts-ignore
             promise = promise.then(handle.fulfilled, handle.rejected);
         });
@@ -90,7 +72,7 @@ export class HttpCore {
         promise = promise.then(this.dispatchRequest.bind(this));
 
         // 连接上响应拦截器
-        this.interceptor.response.each(handle => {
+        this.interceptor.response.each((handle) => {
             // @ts-ignore
             promise = promise.then(handle.fulfilled, handle.rejected);
         });
@@ -108,7 +90,7 @@ export class HttpCore {
         return this.request({
             ...options,
             url,
-            method: 'GET'
+            method: 'GET',
         } as HttpRequest.IRequestOptions);
     }
 
@@ -121,7 +103,7 @@ export class HttpCore {
         return this.request({
             ...options,
             url,
-            method: 'POST'
+            method: 'POST',
         } as HttpRequest.IRequestOptions);
     }
 
@@ -134,7 +116,7 @@ export class HttpCore {
         return this.request({
             ...options,
             url,
-            method: 'PUT'
+            method: 'PUT',
         } as HttpRequest.IRequestOptions);
     }
 
@@ -147,7 +129,24 @@ export class HttpCore {
         return this.request({
             ...options,
             url,
-            method: 'DELETE'
+            method: 'DELETE',
         } as HttpRequest.IRequestOptions);
+    }
+
+    /**
+     * 派发实际请求，通过提供的适配器
+     * @param options
+     * @private
+     */
+    private dispatchRequest(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult | HttpError> {
+        return this.adaptor(options)
+            .then((res) => {
+                res.options = options;
+                return res;
+            }).catch((error) => {
+                const httpError = new HttpError(error.errMsg);
+                httpError.options = options;
+                return httpError;
+            });
     }
 }

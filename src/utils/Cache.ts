@@ -9,7 +9,7 @@ class Cache {
      * @param data
      */
     set(data): string {
-        const key = 'cache_' + Math.random().toString().substring(2);
+        const key = `cache_${Math.random().toString().substring(2)}`;
         this.cachePool.set(key, data);
         return key;
     }
@@ -19,7 +19,8 @@ class Cache {
      * @param key
      */
     get<T>(key: string): T | undefined {
-        if (!this.cachePool.has(key)) return undefined; // 如果缓存池中没有指定key的数据，则直接返回null
+        if (!this.cachePool.has(key))
+            return undefined; // 如果缓存池中没有指定key的数据，则直接返回null
 
         const data: T = this.cachePool.get(key); // 如果有则取出
         this.cachePool.delete(key); // 然后删除该数据

@@ -1,34 +1,28 @@
+import { FormRules } from '@/lib/form-validator/types';
+
 declare type Data = Record<string, unknown>;
 
-declare type PropMethod<T, TConstructor = any> = [T] extends [
-        ((...args: any) => any) | undefined
-] ? {
-    new(): TConstructor;
-    (): T;
-    readonly prototype: TConstructor;
-} : never;
+declare type Func = (...args: any) => any;
 
 
-declare type PropConstructor<T = any> = {
-    new(...args: any[]): T & {};
-} | {
-    (): T;
-} | PropMethod<T>;
+export interface FormDataOptions<T> {
+    /** 默认值 */
+    default: T | (() => T)
+    rules?: FormRules<T> | FormRules<T>[]
 
-export declare type PropType<T> = PropConstructor<T> | PropConstructor<T>[];
-
-/**
- * 默认值工厂
- */
-declare type DefaultFactory<T> = (props: Data) => T | null | undefined;
-
-
-export interface FormDataOptions<T = any, D = T, DT = PropType<T> | null> {
-    default?: D | DefaultFactory<D> | undefined;
 }
 
+declare type DataTypeFactory<T> = T extends Func ? () => T : T;
 
+declare type DataType<T> = T extends { default: infer DT } ? DataTypeFactory<DT> : DataTypeFactory<T>;
+
+/** useForm 表单数据配置对象 */
+export declare type useFormOptions<T = Data> = {
+    [K in keyof T]: T[K] | (() => T[K]) | FormDataOptions<T[K]>
+};
+
+/** 表单数据对象 */
 export declare type FormData<P = Record<string, any>> = {
-    [K in keyof P]: FormDataOptions<P[K]> | null
+    [K in keyof P]: DataType<P[K]>
 };
 

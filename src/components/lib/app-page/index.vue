@@ -1,6 +1,3 @@
-<script lang="ts">
-export default { name: 'app-page' };
-</script>
 <script
     setup
     lang="ts"
@@ -17,13 +14,15 @@ useDialog();
 
 const loadingState = useComponentState<ILoadingState>(SYMBOL_LOADING);
 const dialogState = useComponentState<IDialogSync>(SYMBOL_DIALOG);
-
 </script>
 
-<!--页面包裹容器-->
-<template>
+<script lang="ts">
+export default { name: 'AppPage' };
+</script>
 
-    <AppSafeTop/>
+<!-- 页面包裹容器 -->
+<template>
+    <AppSafeTop />
 
     <AppLoading
         v-if="loadingState.activated"
@@ -55,12 +54,12 @@ const dialogState = useComponentState<IDialogSync>(SYMBOL_DIALOG);
         @confirm="dialogState.onConfirm"
     />
 
-    <!--<nut-navbar-->
-    <!--    :safe-area-inset-top="true"-->
-    <!--    title="你好"-->
-    <!--&gt;</nut-navbar>-->
-    <slot/>
-    <AppSafeBottom/>
+    <!-- <nut-navbar -->
+    <!--    :safe-area-inset-top="true" -->
+    <!--    title="你好" -->
+    <!-- &gt;</nut-navbar> -->
+    <slot />
+    <AppSafeBottom />
 </template>
 
 <style></style>

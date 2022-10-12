@@ -1,6 +1,3 @@
-<script lang="ts">
-export default { name: 'app-fulls' };
-</script>
 <script
     lang="ts"
     setup
@@ -10,6 +7,10 @@ interface IPros {
 }
 
 defineProps<IPros>();
+</script>
+
+<script lang="ts">
+export default { name: 'AppFulls' };
 </script>
 
 <template>
@@ -24,10 +25,9 @@ defineProps<IPros>();
                 :key="i"
                 class="falls-item"
             >
-                <slot :current="item"/>
+                <slot :current="item" />
             </div>
         </div>
-
     </div>
 </template>
 

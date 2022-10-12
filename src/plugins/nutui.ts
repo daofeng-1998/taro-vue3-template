@@ -9,13 +9,14 @@ import {
     Navbar,
     Notify,
     OverLay,
-    Switch
+    Price,
+    Switch,
 } from '@nutui/nutui-taro';
 
-const el = [Navbar, Icon, Button, Notify, OverLay, Cell, CellGroup, Switch, Form, FormItem, Input];
+const el = [Navbar, Icon, Button, Notify, OverLay, Cell, CellGroup, Switch, Form, FormItem, Input, Price];
 
 export default {
     install(app) {
         el.forEach(app.use);
-    }
+    },
 };

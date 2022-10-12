@@ -72,7 +72,10 @@ page :nth-child(n) ::-webkit-scrollbar {
     background: transparent;
 }
 
-page, body {
+page, body, body .taro_page {
+    // 统一基础字体尺寸
     font-size: 30px;
-    background-color: #f7f7f7;
+    // 统一基础行高
+    line-height: 38px;
+    background-color: #f6f6f6 !important;
 }

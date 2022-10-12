@@ -13,7 +13,8 @@ export const curry = (func: Function, count: number): Function => {
             return function (...a) {
                 return _(...args.concat(a));
             };
-        } else {
+        }
+        else {
             return func(...args);
         }
     };
@@ -26,14 +27,13 @@ export const curry = (func: Function, count: number): Function => {
  * @param {Function} handle 处理函数
  */
 export const debounce = (wait: number, immediate: boolean, handle: Function): Function => {
-    if (typeof handle !== 'function') {
+    if (typeof handle !== 'function')
         throw new Error('handle must be an function');
-    }
 
     let timeout = -1;
 
     return function (...args) {
-        timeout != -1 && clearTimeout(timeout);
+        timeout !== -1 && clearTimeout(timeout);
         const init = immediate && timeout === -1;
 
         timeout = globalEnv.setTimeout(() => {
@@ -51,13 +51,12 @@ export const debounce = (wait: number, immediate: boolean, handle: Function): Fu
  * @param {Function} handle 处理函数
  */
 export const throttle = (wait: number, handle: Function): Function => {
-
     let previous = Date.now();
 
-    return function () {
+    return (...args) => {
         if (Date.now() - previous > wait) {
             previous = Date.now();
-            handle.apply(this, arguments);
+            handle.apply(this, args);
         }
     };
 };

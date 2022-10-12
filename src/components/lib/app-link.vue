@@ -4,15 +4,14 @@ import { go } from '@/utils/Router';
 defineProps({
     url: {
         type: String,
-        default: ''
-    }
+        default: '',
+    },
 });
-
 </script>
 
 <template>
     <div class="app-link" @click="go(url)">
-        <slot/>
+        <slot />
     </div>
 </template>
 
