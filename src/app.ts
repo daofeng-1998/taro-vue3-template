@@ -7,6 +7,7 @@ import nutui from '@/plugins/nutui';
 import '@/components/lib/script/component-states';
 
 import './permission';
+import { useCommonStore } from '@/stores/common';
 
 const App = createApp({
     onShow() {
@@ -15,7 +16,11 @@ const App = createApp({
 });
 
 App
+    .use(createPinia())
     .use(nutui)
     .use(createPinia());
+
+// 设置启动时间
+useCommonStore().lunchTime = Date.now();
 
 export default App;

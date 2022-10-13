@@ -1,4 +1,5 @@
 import type { Ref } from 'vue';
+import { mergeFunc } from '@/utils/FunctionTools';
 import { useComponentState } from '@/components/lib/script/component-states';
 import { SYMBOL_DIALOG } from '@/components/lib/script/Symbols';
 
@@ -24,42 +25,31 @@ export const newDialogState = () => ({
 export const useDialog = (): IDialogControl => {
     const state: Ref<IDialogSync> = useComponentState<IDialogSync>(SYMBOL_DIALOG);
 
-    const resetState = () => {
-        const newState = newDialogState() as IDialogSync;
-        newState.activated = true;
-        state.value = newState;
-    };
-
     /**
      * 更改dialog状态
      * @param newState
      */
-    const setState = (newState: IDialogBase) => {
-        Object.assign<IDialogSync, IDialogBase>(state.value, newState);
+    const setState = (newState: Partial<IDialogBase>) => {
+        Object.assign(state.value, newState);
     };
 
     const close = () => {
         state.value.show = false;
-        // setTimeout(resetState, 200);
     };
 
     const show = (options: IDialogBase) => {
-        resetState(); // 重置为默认状态，避免其他调用残留
-
         return new Promise((resolve, reject) => {
-            Object.assign<IDialogSync, IDialogSync>(state.value, {
-                ...options,
-                activated: true,
-                show: true,
-                onConfirm: () => {
-                    close();
-                    resolve(undefined);
+            Object.assign<any, any, IDialogSync>(
+                state.value,
+                newDialogState(), // 复制到一个新的状态对象，实现覆盖之前的状态信息，使之处于最干净的状态
+                {
+                    ...options,
+                    activated: true,
+                    show: true,
+                    onConfirm: mergeFunc(close, resolve),
+                    onCancel: mergeFunc(close, reject),
                 },
-                onCancel: () => {
-                    close();
-                    reject();
-                },
-            });
+            );
         });
     };
 
@@ -85,11 +75,11 @@ export const useDialog = (): IDialogControl => {
     };
 
     return {
-        setState,
-        close,
         show,
-        showContent,
+        close,
+        setState,
         showCancel,
+        showContent,
     };
 };
 

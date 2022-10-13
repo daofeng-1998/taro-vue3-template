@@ -6,6 +6,7 @@ import {
     FormItem,
     Icon,
     Input,
+    InputNumber,
     Navbar,
     Notify,
     OverLay,
@@ -13,7 +14,7 @@ import {
     Switch,
 } from '@nutui/nutui-taro';
 
-const el = [Navbar, Icon, Button, Notify, OverLay, Cell, CellGroup, Switch, Form, FormItem, Input, Price];
+const el = [Navbar, Icon, Button, Notify, OverLay, Cell, CellGroup, Switch, Form, FormItem, Input, Price, InputNumber];
 
 export default {
     install(app) {

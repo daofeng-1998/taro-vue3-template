@@ -61,3 +61,12 @@ export const throttle = (wait: number, handle: Function): Function => {
     };
 };
 
+/**
+ * 合并多个函数为一个按顺序执行的函数
+ * @param funcs
+ */
+export const mergeFunc = (...funcs: Function[]): Function => {
+    return () => {
+        funcs.forEach(func => func());
+    };
+};

@@ -45,7 +45,7 @@ export class HttpCore {
      * 发起通用请求
      * @param options
      */
-    public request<R extends Response>(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult<R>> {
+    public request = <R extends Response>(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult<R>> => {
         let url = options.url;
         url = url.includes('://')
             ? url
@@ -79,66 +79,66 @@ export class HttpCore {
 
         // @ts-ignore
         return promise;
-    }
+    };
 
     /**
      * 发起get请求
      * @param url
      * @param options
      */
-    public get<R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
+    public get = <R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> => {
         return this.request({
             ...options,
             url,
             method: 'GET',
         } as HttpRequest.IRequestOptions);
-    }
+    };
 
     /**
      * 发起通用POST请求
      * @param url
      * @param options
      */
-    public post<R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
+    public post = <R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> => {
         return this.request({
             ...options,
             url,
             method: 'POST',
         } as HttpRequest.IRequestOptions);
-    }
+    };
 
     /**
      * 发起通用PUT请求
      * @param url
      * @param options
      */
-    public put<R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
+    public put = <R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> => {
         return this.request({
             ...options,
             url,
             method: 'PUT',
         } as HttpRequest.IRequestOptions);
-    }
+    };
 
     /**
      * 发起通用DELETE请求
      * @param url
      * @param options
      */
-    public delete<R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> {
+    public delete = <R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> => {
         return this.request({
             ...options,
             url,
             method: 'DELETE',
         } as HttpRequest.IRequestOptions);
-    }
+    };
 
     /**
      * 派发实际请求，通过提供的适配器
      * @param options
      * @private
      */
-    private dispatchRequest(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult | HttpError> {
+    private dispatchRequest = (options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult | HttpError> => {
         return this.adaptor(options)
             .then((res) => {
                 res.options = options;
@@ -148,5 +148,5 @@ export class HttpCore {
                 httpError.options = options;
                 return httpError;
             });
-    }
+    };
 }

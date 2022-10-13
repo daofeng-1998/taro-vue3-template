@@ -3,16 +3,16 @@
     setup
 >
 interface ImageMode {
-    scaleToFill
-    aspectFit
-    aspectFill
-    widthFix
-    heightFix
-    top
-    bottom
-    center
-    left
-    right
+    'scaleToFill'
+    'aspectFit'
+    'aspectFill'
+    'widthFix'
+    'heightFix'
+    'top'
+    'bottom'
+    'center'
+    'left'
+    'right'
     'top left'
     'top right'
     'bottom left'
@@ -121,8 +121,6 @@ export default { name: 'AppGoodsCard' };
 
         box-sizing: border-box;
         display: flex;
-        //align-items: flex-start;
-        //width: max-content;
 
         &.vertical {
             flex-direction: column;
