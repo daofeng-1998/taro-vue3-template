@@ -13,8 +13,7 @@ export const curry = (func: Function, count: number): Function => {
             return function (...a) {
                 return _(...args.concat(a));
             };
-        }
-        else {
+        } else {
             return func(...args);
         }
     };
@@ -65,8 +64,10 @@ export const throttle = (wait: number, handle: Function): Function => {
  * 合并多个函数为一个按顺序执行的函数
  * @param funcs
  */
-export const mergeFunc = (...funcs: Function[]): Function => {
+export const mergeFunc = <R = any>(...funcs: Function[]): () => R => {
     return () => {
-        funcs.forEach(func => func());
+        return funcs.reduce((preResult, item) => {
+            return item(preResult);
+        }, undefined);
     };
 };

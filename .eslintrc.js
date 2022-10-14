@@ -12,5 +12,6 @@ module.exports = {
         'prefer-promise-reject-errors': 'off',
         'no-debugger': 'warn',
         'no-restricted-syntax': 'off',
+        '@typescript-eslint/brace-style': ['error', '1tbs'],
     },
 };

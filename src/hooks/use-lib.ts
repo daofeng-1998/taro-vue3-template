@@ -1,10 +1,11 @@
 import type { ComputedRef, Ref, UnwrapNestedRefs } from 'vue';
-import { computed, reactive, ref } from 'vue';
+import { computed, customRef, reactive, ref } from 'vue';
 import { useRouter } from '@tarojs/taro';
 import cache from '@/utils/Cache';
 import { ROUTE_PARAMS_KEY } from '@/utils/Router';
 import { BASE_TYPE, formatDate } from '@/utils/Tools';
 import type { FormData, useFormOptions } from '@/hooks/hooks';
+import { mergeFunc } from '@/utils/FunctionTools';
 
 export const useVModel = <T>(props: Object, key: string, emit: Function) => {
     return computed<T>({
@@ -68,8 +69,7 @@ export const useForm = <F extends object>(data: useFormOptions<F>): [UnwrapNeste
             if (dataTypes.includes(type)) {
                 // @ts-ignore
                 newObj[key] = getDefaultValue(data[key]);
-            }
-            else {
+            } else {
                 // @ts-ignore
                 newObj[key] = getDefaultValue(data[key].default);
             }
@@ -142,3 +142,22 @@ export const useRouteParams = () => {
 
     return state;
 };
+
+/**
+ * 创建一个受控ref
+ * @param value
+ */
+export const useDelayRef = <T>(value: T): [Ref<T>, () => void] => {
+    let update;
+
+    const state = customRef<T>((track, trigger) => {
+        update = trigger;
+        return {
+            get: mergeFunc<T>(track, () => value),
+            set: newValue => value = newValue,
+        };
+    });
+
+    return [state, update];
+};
+

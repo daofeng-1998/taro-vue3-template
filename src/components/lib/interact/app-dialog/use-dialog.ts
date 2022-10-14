@@ -35,6 +35,12 @@ export const useDialog = (): IDialogControl => {
 
     const close = () => {
         state.value.show = false;
+        setTimeout(() => {
+            Object.assign<any, any, Partial<IDialogSync>>(state.value, newDialogState(), {
+                activated: true,
+                show: false,
+            });
+        }, 500);
     };
 
     const show = (options: IDialogBase) => {

@@ -3,6 +3,7 @@ export default defineAppConfig({
         'pages/development/home/index',
         'pages/data/preview/index',
         'pages/development/route/index',
+        'pages/development/hooks/index',
     ],
     window: {
         backgroundTextStyle: 'light',
