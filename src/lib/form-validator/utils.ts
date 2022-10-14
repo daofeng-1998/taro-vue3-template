@@ -7,7 +7,3 @@ export const isEmptyValue = (value, type?: string) => {
 
     return typeof value === 'string' && !value;
 };
-
-export const isEmptyObject = (obj: object) => {
-    return Object.keys(obj).length === 0;
-};

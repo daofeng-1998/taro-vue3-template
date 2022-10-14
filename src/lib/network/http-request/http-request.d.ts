@@ -2,19 +2,16 @@ export namespace HttpRequest {
     interface IAdaptor {
         (options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult>
     }
+
     /** 请求头 */
     interface IHeader {
         /** 请求内容类型 */
         'content-type',
-        /** 代理人 */
-        'user-agent',
-        /** 请求来源 */
-        'referer'
     }
 
     type IAnyObject = Record<keyof IHeader | string, any>
 
-    interface Method {
+    type Method = {
         /** HTTP 请求 OPTIONS */
         OPTIONS
         /** HTTP 请求 GET */
@@ -40,14 +37,22 @@ export namespace HttpRequest {
         header?: IAnyObject,
         /** 请求方法 */
         method?: keyof Method,
+        /** 过滤null和undefined */
+        filterEmpty?: boolean,
+        dataType?: 'json' | 'other'
     }
 
     interface IDefaultOptions extends IBasicOptions {
         baseUrl?: string,
     }
 
-    interface IRequestOptions extends IBasicOptions {
+    interface IRequestOptions<U extends string | TaroGeneral.IAnyObject | ArrayBuffer = any> extends IBasicOptions {
         url: string,
+        data?: U,
+        params?: object
+    }
+
+    interface IRequestMethodOptions extends Omit<IRequestOptions, 'method' | 'url'> {
     }
 
 
@@ -55,6 +60,7 @@ export namespace HttpRequest {
         /** 错误信息 */
         errMsg: string
     }
+
 
     interface ISuccessResult<T extends string | TaroGeneral.IAnyObject | ArrayBuffer = any> extends IRequestResult {
         /** 开发者服务器返回的数据 */

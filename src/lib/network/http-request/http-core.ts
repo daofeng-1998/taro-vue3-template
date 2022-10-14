@@ -1,8 +1,10 @@
 import type { HttpRequest } from '@/lib/network/http-request/http-request';
 import HttpInterceptor from '@/lib/network/http-request/http-interceptor';
 import { HttpError } from '@/lib/network/http-request/errors/http-error';
+import { isEmptyObject } from '@/utils/Tools';
 
 type Response = string | HttpRequest.IAnyObject | ArrayBuffer;
+type MethodOptions = HttpRequest.IRequestMethodOptions;
 
 export class HttpCore {
     /**
@@ -24,7 +26,10 @@ export class HttpCore {
     /**
      * 默认配置
      */
-    public default: HttpRequest.IDefaultOptions = {} as HttpRequest.IDefaultOptions;
+    public default: Partial<HttpRequest.IDefaultOptions> = {
+        filterEmpty: true,
+        timeout: 10000,
+    };
 
     private constructor(adaptor: HttpRequest.IAdaptor) {
         this.adaptor = adaptor;
@@ -46,16 +51,11 @@ export class HttpCore {
      * @param options
      */
     public request = <R extends Response>(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult<R>> => {
-        let url = options.url;
-        url = url.includes('://')
-            ? url
-            : (this.default?.baseUrl || '').concat(url);
-
         /** 最终请求配置信息 */
         const finalOptions = {
             ...this.default, // 默认配置
-            ...options, // 本次请求的配置，覆盖默认配置
-            url, // 这个url会覆盖掉前面配置中的url
+            ...this.initRequestOptions(options), // 本次请求的配置，覆盖默认配置
+
         };
         if (!finalOptions.method)
             finalOptions.method = 'GET';
@@ -86,7 +86,7 @@ export class HttpCore {
      * @param url
      * @param options
      */
-    public get = <R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> => {
+    public get = <R extends Response>(url: string, options?: MethodOptions): Promise<HttpRequest.ISuccessResult<R>> => {
         return this.request({
             ...options,
             url,
@@ -99,7 +99,7 @@ export class HttpCore {
      * @param url
      * @param options
      */
-    public post = <R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> => {
+    public post = <R extends Response>(url: string, options?: MethodOptions): Promise<HttpRequest.ISuccessResult<R>> => {
         return this.request({
             ...options,
             url,
@@ -112,7 +112,7 @@ export class HttpCore {
      * @param url
      * @param options
      */
-    public put = <R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> => {
+    public put = <R extends Response>(url: string, options?: MethodOptions): Promise<HttpRequest.ISuccessResult<R>> => {
         return this.request({
             ...options,
             url,
@@ -125,12 +125,48 @@ export class HttpCore {
      * @param url
      * @param options
      */
-    public delete = <R extends Response>(url: string, options?: HttpRequest.IBasicOptions): Promise<HttpRequest.ISuccessResult<R>> => {
+    public delete = <R extends Response>(url: string, options?: MethodOptions): Promise<HttpRequest.ISuccessResult<R>> => {
         return this.request({
             ...options,
             url,
             method: 'DELETE',
         } as HttpRequest.IRequestOptions);
+    };
+
+    private initRequestOptions = (options: HttpRequest.IRequestOptions) => {
+        const newOptions = Object.assign({}, options);
+
+        const url = newOptions.url;
+
+        newOptions.url = url.includes('://')
+            ? url
+            : (this.default?.baseUrl || '').concat(url);
+
+        if (!isEmptyObject(newOptions.params)) {
+            const paramsArr: string[] = [];
+
+            // @ts-ignore 上面已经判断它不会为空对象了
+            Object.keys(newOptions.params).forEach((key) => {
+                const ele = newOptions.params?.[key];
+
+                if (ele === undefined || ele === null) {
+                    !newOptions.filterEmpty && paramsArr.push(`${key}=`);
+                } else {
+                    if (typeof ele === 'object')
+                        paramsArr.push(`${key}=${encodeURIComponent(JSON.stringify(ele))}`);
+                    else
+                        paramsArr.push(`${key}=${encodeURIComponent(ele)}`);
+                }
+            });
+
+            if (paramsArr.length > 0) {
+                newOptions.url = newOptions.url
+                    .concat(newOptions.url.endsWith('?') ? '' : '?')
+                    .concat(paramsArr.join('&'));
+            }
+        }
+
+        return newOptions;
     };
 
     /**

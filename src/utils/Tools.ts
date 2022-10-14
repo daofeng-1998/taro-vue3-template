@@ -61,8 +61,7 @@ export const formatDate = (date: Date | string, fmt = 'yyyy-MM-dd HH:mm:ss'): st
             }
         }
         return fmt;
-    }
-    catch {
+    } catch {
         return '';
     }
 };
@@ -102,6 +101,6 @@ export const exactInterval = (func: Function, delay: number): () => boolean => {
 };
 
 /** 判断是否为空对象 */
-export const isEmptyObject = (obj: object) => {
-    return Object.keys(obj).length === 0;
+export const isEmptyObject = (obj: object | null | undefined) => {
+    return obj === null || obj === undefined || Object.keys(obj).length === 0;
 };
