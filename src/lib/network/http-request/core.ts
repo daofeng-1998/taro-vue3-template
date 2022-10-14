@@ -1,12 +1,12 @@
 import type { HttpRequest } from '@/lib/network/http-request/http-request';
-import HttpInterceptor from '@/lib/network/http-request/http-interceptor';
+import Interceptor from '@/lib/network/http-request/interceptor';
 import { HttpError } from '@/lib/network/http-request/errors/http-error';
-import { isEmptyObject } from '@/utils/Tools';
+import qs from '@/lib/query-string/qs';
 
 type Response = string | HttpRequest.IAnyObject | ArrayBuffer;
 type MethodOptions = HttpRequest.IRequestMethodOptions;
 
-export class HttpCore {
+export class Core {
     /**
      * 请求适配器，默认为Taro.request
      * @private
@@ -18,9 +18,9 @@ export class HttpCore {
      * */
     public interceptor = {
         /** 请求拦截器 */
-        request: new HttpInterceptor(),
+        request: new Interceptor(),
         /** 响应拦截器 */
-        response: new HttpInterceptor(),
+        response: new Interceptor(),
     };
 
     /**
@@ -43,7 +43,7 @@ export class HttpCore {
         if (!adaptor || typeof adaptor !== 'function')
             throw new TypeError('adaptor is not a function');
 
-        return new HttpCore(adaptor);
+        return new Core(adaptor);
     }
 
     /**
@@ -142,27 +142,13 @@ export class HttpCore {
             ? url
             : (this.default?.baseUrl || '').concat(url);
 
-        if (!isEmptyObject(newOptions.params)) {
-            const paramsArr: string[] = [];
+        if (typeof newOptions.params === 'object') {
+            const queryString = qs.stringify(newOptions.params);
 
-            // @ts-ignore 上面已经判断它不会为空对象了
-            Object.keys(newOptions.params).forEach((key) => {
-                const ele = newOptions.params?.[key];
-
-                if (ele === undefined || ele === null) {
-                    !newOptions.filterEmpty && paramsArr.push(`${key}=`);
-                } else {
-                    if (typeof ele === 'object')
-                        paramsArr.push(`${key}=${encodeURIComponent(JSON.stringify(ele))}`);
-                    else
-                        paramsArr.push(`${key}=${encodeURIComponent(ele)}`);
-                }
-            });
-
-            if (paramsArr.length > 0) {
+            if (queryString.length > 0) {
                 newOptions.url = newOptions.url
                     .concat(newOptions.url.endsWith('?') ? '' : '?')
-                    .concat(paramsArr.join('&'));
+                    .concat(queryString);
             }
         }
 

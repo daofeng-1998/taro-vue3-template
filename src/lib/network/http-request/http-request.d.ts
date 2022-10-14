@@ -78,10 +78,3 @@ export namespace HttpRequest {
     }
 
 }
-export namespace Interceptor {
-
-    interface IHandle {
-        fulfilled: Function,
-        rejected?: Function
-    }
-}
