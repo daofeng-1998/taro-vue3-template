@@ -1,5 +1,5 @@
 import type { Ref } from 'vue';
-import { mergeFunc } from '@/utils/FunctionTools';
+import { mergeFunc } from '@/utils/TypeTools/FunctionTools';
 import { useComponentState } from '@/components/lib/script/component-states';
 import { SYMBOL_DIALOG } from '@/components/lib/script/Symbols';
 

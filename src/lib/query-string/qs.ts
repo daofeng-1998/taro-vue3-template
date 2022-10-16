@@ -1,5 +1,5 @@
 import type { IQsStringifyOptions } from './query-string';
-import { isEmptyObject } from '@/utils/Tools';
+import { isEmptyObject } from '@/utils/TypeTools/ObjectTools';
 
 export default {
     stringify(obj: object, options: IQsStringifyOptions = {}): string {

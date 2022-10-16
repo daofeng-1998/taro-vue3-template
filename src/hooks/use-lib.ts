@@ -3,9 +3,10 @@ import { computed, customRef, reactive, ref } from 'vue';
 import { useRouter } from '@tarojs/taro';
 import cache from '@/utils/Cache';
 import { ROUTE_PARAMS_KEY } from '@/utils/Router';
-import { BASE_TYPE, formatDate } from '@/utils/Tools';
+import { formatDate } from '@/utils/CommonTools';
 import type { FormData, useFormOptions } from '@/hooks/hooks';
-import { mergeFunc } from '@/utils/FunctionTools';
+import { mergeFunc } from '@/utils/TypeTools/FunctionTools';
+import { BASE_TYPE } from '@/utils/TypeTools/TypesTools';
 
 export const useVModel = <T>(props: Object, key: string, emit: Function) => {
     return computed<T>({

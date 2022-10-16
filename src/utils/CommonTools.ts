@@ -1,13 +1,8 @@
 /**
  * 全局环境对象
  */
-import Taro from '@tarojs/taro';
 
 export const globalEnv = window || self;
-/**
- * 基本数据类型
- */
-export const BASE_TYPE = ['string', 'number', 'bigint', 'boolean', 'undefined', 'symbol', 'null'];
 
 /**
  * 格式化数字，默认保留两位小数
@@ -74,33 +69,3 @@ export const random = (min: number, max?: number) => {
         return Math.floor(Math.random() * min + 1);
 };
 
-/**
- * 精确不卡顿的定时任务
- * @param func
- * @param delay
- */
-export const exactInterval = (func: Function, delay: number): () => boolean => {
-    let stop = false;
-
-    let preTime = -1;
-    const handle = (time: number): void => {
-        if (preTime === -1)
-            preTime = time;
-
-        if (time - preTime >= delay) {
-            preTime = time;
-            // @ts-ignore
-            Taro.nextTick(func);
-        }
-
-        stop || requestAnimationFrame(handle);
-    };
-    requestAnimationFrame(handle);
-
-    return () => stop = true;
-};
-
-/** 判断是否为空对象 */
-export const isEmptyObject = (obj: object | null | undefined) => {
-    return obj === null || obj === undefined || Object.keys(obj).length === 0;
-};

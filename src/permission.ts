@@ -1,6 +1,6 @@
 import { addRouterHook } from '@/utils/Router';
 import { useDialog } from '@/components/lib/interact/app-dialog/use-dialog';
-import { exactInterval } from '@/utils/Tools';
+import { exactInterval } from '@/utils/PlatformTools';
 
 addRouterHook(async (currentPath, url, next) => {
     console.log('钩子触发 - onShow');
@@ -31,8 +31,7 @@ addRouterHook(async (currentPath, url, next) => {
         }, 1000);
 
         promise.then(next).finally(stop);
-    }
-    else {
+    } else {
         next();
     }
 });
