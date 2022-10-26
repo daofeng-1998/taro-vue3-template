@@ -1,4 +1,5 @@
-:root {
+:root,
+page {
     --space-small: 20px;
     --space-normal: 30px;
     --space-big: 40px;
@@ -33,6 +34,9 @@
     --preview-item-font-size: 28px;
 
     --preview-item-padding: 10px;
+
+    --button-group-border: var(--color-gray1);
+    --button-group-radius: 15px;
 }
 
 

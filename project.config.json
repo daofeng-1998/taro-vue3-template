@@ -2,7 +2,7 @@
     "miniprogramRoot": "./dist",
     "projectname": "ts-template",
     "description": "TS项目基础模板",
-    "appid": "wx4ff24126ad5d463e",
+    "appid": "wx2fc860a61a17906b",
     "setting": {
         "urlCheck": false,
         "es6": false,

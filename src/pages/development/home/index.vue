@@ -12,6 +12,7 @@ import { go, goAny } from '@/utils/Router';
 import { useFormData } from '@/hooks/use-lib';
 import AppGoodsCard from '@/components/lib/app-goods-card/index.vue';
 import { useCommonStore } from '@/stores/common';
+import AppButtonGroup from '@/components/lib/app-button-group/index.vue';
 
 definePageConfig({
     navigationBarTitleText: '首页',
@@ -185,6 +186,19 @@ export default { name: 'Home' };
                 </nut-button>
             </nut-cell>
         </nut-cell-group>
+
+        <AppButtonGroup style="--button-group-border: #000;">
+            <nut-button>
+                按钮
+            </nut-button>
+            <nut-button>
+                按钮
+            </nut-button>
+            <nut-button>
+                按钮
+            </nut-button>
+        </AppButtonGroup>
+        <div style="padding: 50px" />
     </AppPage>
 </template>
 
