@@ -122,15 +122,14 @@ export default { name: 'AppGoodsCard' };
         position: absolute;
         top: 0;
         left: 0;
-        vertical-align: middle;
 
         &.horizontal {
-            height: 100% !important; /* 必须加上important 否则会被taro覆盖 */
+            /* 横向模式下必须设置 否则会被taro覆盖 */
+            height: 100% !important;
         }
 
         &.vertical {
             position: unset;
-            height: v-bind(imageHeight);
         }
 
         &-area {
@@ -146,7 +145,7 @@ export default { name: 'AppGoodsCard' };
             position: relative;
 
             &.vertical {
-                height: auto;
+                height: v-bind(imageHeight) !important;
                 padding-bottom: unset;
             }
         }
