@@ -23,21 +23,26 @@ export default { name: 'AppButtonGroup' };
     .nut-button {
         flex: 1;
         border-radius: 0;
-        //border-top: 0;
-        //border-left: 0;
-        //border-bottom: 0;
-        border: 1px solid var(--button-group-border);
-        border-right: 0;
+
+        border: 0;
+        border-top: var(--button-group-outborder) solid var(--button-group-border-color);
+        border-bottom: var(--button-group-outborder) solid var(--button-group-border-color);
+        border-right: var(--button-group-innerborder) solid var(--button-group-border-color);
 
         &:first-child {
+            border-left: var(--button-group-outborder) solid var(--button-group-border-color);
             border-top-left-radius: var(--button-group-radius);
             border-bottom-left-radius: var(--button-group-radius);
         }
 
         &:last-child {
-            border-right: 1px solid var(--button-group-border);
+            border-right: var(--button-group-outborder) solid var(--button-group-border-color);
             border-top-right-radius: var(--button-group-radius);
             border-bottom-right-radius: var(--button-group-radius);
+        }
+
+        &:before {
+            border: 0;
         }
     }
 }

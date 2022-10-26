@@ -28,10 +28,7 @@ export default { name: 'AppGoodsCard' };
 </script>
 
 <template>
-    <view
-        :class="direction"
-        class="app-goods-card"
-    >
+    <view class="app-goods-card">
         <view
             :class="direction"
             class="app-goods-card-wrapper"
@@ -100,10 +97,6 @@ export default { name: 'AppGoodsCard' };
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-    }
-
-    &.vertical {
-        width: calc(v-bind(imageWidth));
     }
 
     &-wrapper {

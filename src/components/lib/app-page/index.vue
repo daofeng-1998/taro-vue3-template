@@ -28,27 +28,7 @@ export default { name: 'AppPage' };
     />
     <AppDialog
         v-if="dialogState.activated"
-        v-model:show="dialogState.show"
-
-        :content="dialogState.content"
-        :cancel-color="dialogState.cancelColor"
-        :cancel-text="dialogState.cancelText"
-        :content-type="dialogState.contentType"
-
-        :confirm-color="dialogState.confirmColor"
-        :confirm-text="dialogState.confirmText"
-
-        :content-color="dialogState.contentColor"
-        :show-cancel="dialogState.showCancel"
-
-        :title="dialogState.title"
-        :title-color="dialogState.titleColor"
-
-        :disable-cancel="dialogState.disableCancel"
-        :disable-confirm="dialogState.disableConfirm"
-
-        @cancel="dialogState.onCancel"
-        @confirm="dialogState.onConfirm"
+        v-bind="dialogState"
     />
 
     <!-- <nut-navbar -->

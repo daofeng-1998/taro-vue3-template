@@ -60,7 +60,7 @@ const onRichDialog = () => {
             + '<video autoplay controls style="width: 100%"  src="https://vd2.bdstatic.com/mda-nj225vh0nfbdrr8g/sc/cae_h264/1664761364992520146/mda-nj225vh0nfbdrr8g.mp4"></video>',
         showCancel: true,
         cancelText: '谢谢',
-        confirmText: '马上加衣服',
+        confirmText: '就不穿',
     });
 };
 
@@ -155,7 +155,7 @@ export default { name: 'Home' };
             :name-line="2"
             :price="8.12"
             direction="horizontal"
-            goods-name="大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹闸蟹大闸蟹大闸蟹大闸蟹大闸蟹闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹"
+            goods-name="大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹"
             image-mode="aspectFill"
             image-width="25%"
             @click-image="dialog.showContent('点击了图片')"
@@ -175,6 +175,34 @@ export default { name: 'Home' };
             </template>
         </AppGoodsCard>
 
+        <div
+            class="test-app-goods-card-vertical"
+        >
+            <view
+                v-for="i in 4"
+                :key="i"
+                class="wrapper"
+            >
+                <AppGoodsCard
+                    :image-src="require('@/assets/images/god.jpg')"
+                    :name-line="2"
+                    direction="vertical"
+                    goods-name="无限狗头"
+                    image-mode="aspectFill"
+                    image-width="100%"
+
+                    @click-image="dialog.showContent('点击了图片')"
+                />
+                <view class="goods-card-footer">
+                    <nut-price
+                        price="300"
+                        size="normal"
+                    />
+                    <view>立即试用</view>
+                </view>
+            </view>
+        </div>
+
         <nut-cell-group title="工具测试">
             <nut-cell title="倒计时">
                 <nut-button
@@ -186,8 +214,48 @@ export default { name: 'Home' };
                 </nut-button>
             </nut-cell>
         </nut-cell-group>
-
-        <AppButtonGroup style="--button-group-border: #000;">
+        <AppButtonGroup
+            :style="{
+                'padding': Taro.pxTransform(10),
+                '--button-group-radius': '0',
+                '--button-group-border-color': '#fff',
+                '--button-group-outborder': 0,
+            }"
+        >
+            <nut-button type="danger">
+                按钮
+            </nut-button>
+            <nut-button type="primary">
+                按钮
+            </nut-button>
+            <nut-button type="warning">
+                按钮
+            </nut-button>
+        </AppButtonGroup>
+        <AppButtonGroup
+            :style="{
+                'padding': Taro.pxTransform(10),
+                '--button-group-border-color': '#fff',
+                '--button-group-outborder': 0,
+            }"
+        >
+            <nut-button type="primary">
+                按钮
+            </nut-button>
+            <nut-button type="primary">
+                按钮
+            </nut-button>
+            <nut-button type="primary">
+                按钮
+            </nut-button>
+        </AppButtonGroup>
+        <AppButtonGroup
+            :style="{
+                'padding': Taro.pxTransform(10),
+                '--button-group-border-color': '#000',
+                '--button-group-outborder': Taro.pxTransform(1),
+            }"
+        >
             <nut-button>
                 按钮
             </nut-button>
@@ -198,10 +266,37 @@ export default { name: 'Home' };
                 按钮
             </nut-button>
         </AppButtonGroup>
-        <div style="padding: 50px" />
+        <div
+            style="padding: 100px"
+        />
     </AppPage>
 </template>
 
-<style>
+<style lang="scss">
+.test-app-goods-card-vertical {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    padding: 20px;
 
+    .wrapper {
+        border-radius: var(--space-small);
+        overflow: hidden;
+    }
+
+    .goods-card-footer {
+        color: #fff;
+        background-color: #ff5d58;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 26px;
+        padding: var(--padding-1) var(--padding-2);
+
+        .nut-price {
+            color: #fff;
+            display: flex;
+        }
+    }
+}
 </style>

@@ -35,7 +35,9 @@ page {
 
     --preview-item-padding: 10px;
 
-    --button-group-border: var(--color-gray1);
+    --button-group-outborder: 1px;
+    --button-group-innerborder: 1px;
+    --button-group-border-color: var(--color-gray1);
     --button-group-radius: 15px;
 }
 
