@@ -150,6 +150,7 @@ export default { name: 'Home' };
             :image-height="Taro.pxTransform(130)"
         -->
         <AppGoodsCard
+            :image-src="require('@/assets/images/god.jpg')"
             :name-line="2"
             :price="8.12"
             direction="horizontal"

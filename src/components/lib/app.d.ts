@@ -92,3 +92,19 @@ interface IDialogSync extends IBaseState, IDialogBase, IVisible, IController<IDi
     onConfirm?: Function
 }
 
+interface ImageMode {
+    'scaleToFill'
+    'aspectFit'
+    'aspectFill'
+    'widthFix'
+    'heightFix'
+    'top'
+    'bottom'
+    'center'
+    'left'
+    'right'
+    'top left'
+    'top right'
+    'bottom left'
+    'bottom right'
+}

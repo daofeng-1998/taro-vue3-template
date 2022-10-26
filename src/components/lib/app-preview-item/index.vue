@@ -58,19 +58,16 @@ export default { name: 'AppPreviewItem' };
 </template>
 
 <style lang="scss">
-@import '@/components/lib/styles/variable.scss';
-@import '@/assets/styles/common-variable.scss';
-
 .app-preview-item {
     width: 100%;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-    font-size: $preview-item-font-size;
-    padding: $preview-item-padding $space-small;
+    font-size: var(--preview-item-font-size);
+    padding: var(--preview-item-padding) var(--space-small);
 
     &__label {
-        color: $color-gray2;
+        color: var(--color-gray2);
 
     }
 

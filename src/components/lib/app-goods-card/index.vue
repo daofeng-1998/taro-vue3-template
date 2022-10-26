@@ -2,24 +2,8 @@
     lang="ts"
     setup
 >
-interface ImageMode {
-    'scaleToFill'
-    'aspectFit'
-    'aspectFill'
-    'widthFix'
-    'heightFix'
-    'top'
-    'bottom'
-    'center'
-    'left'
-    'right'
-    'top left'
-    'top right'
-    'bottom left'
-    'bottom right'
-}
-
 const props = withDefaults(defineProps<{
+    imageSrc?: string
     imageMode?: keyof ImageMode
     imageWidth?: string
     imageHeight?: string
@@ -60,7 +44,7 @@ export default { name: 'AppGoodsCard' };
                 >
                     <image
                         :mode="imageMode"
-                        :src="require('@/assets/images/god.jpg')"
+                        :src="imageSrc"
                         class="app-goods-card__img"
                     />
                 </view>
@@ -106,12 +90,17 @@ export default { name: 'AppGoodsCard' };
 </template>
 
 <style lang="scss">
-@import '@/components/lib/styles/variable.scss';
-@import '@/assets/styles/mixins.scss';
-
 .app-goods-card {
-    border: 1px solid red;
-    padding: $padding-2;
+    background-color: #fff;
+    padding: var(--padding-2);
+    box-sizing: border-box;
+
+    .taro-img__mode-aspectfit {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
 
     &.vertical {
         width: calc(v-bind(imageWidth));
@@ -127,7 +116,7 @@ export default { name: 'AppGoodsCard' };
 
             .app-goods-card__body {
                 padding-left: 0;
-                padding-top: $padding-2;
+                padding-top: var(--padding-2);
                 width: v-bind(imageWidth);
             }
         }
@@ -146,7 +135,7 @@ export default { name: 'AppGoodsCard' };
             width: v-bind(imageWidth);
             //background-color: skyblue;
             overflow: hidden;
-            border-radius: $border-radius-2;
+            border-radius: var(--border-radius-2);
         }
 
         &-wrapper {
@@ -163,7 +152,7 @@ export default { name: 'AppGoodsCard' };
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding-left: $padding-2;
+        padding-left: var(--padding-2);
 
         &-goods-name {
             @include multi-ellipsis(v-bind(nameLine));

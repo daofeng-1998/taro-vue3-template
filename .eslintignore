@@ -1,2 +1,4 @@
 /src/vender
 /dist
+/node_modules
+/src/index.html

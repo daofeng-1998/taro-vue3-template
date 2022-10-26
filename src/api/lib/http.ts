@@ -22,7 +22,7 @@ http.interceptor.request.use((options: HttpRequest.IRequestOptions) => {
     return options;
 });
 
-http.interceptor.response.use(async (response: HttpRequest.ISuccessResult) => {
+http.interceptor.response.use((response: HttpRequest.ISuccessResult) => {
     if (typeof response.data === 'string') {
         if (response.data.includes('</string>')) {
             try {

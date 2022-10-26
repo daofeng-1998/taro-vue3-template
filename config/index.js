@@ -40,7 +40,10 @@ const config = {
     },
     framework: 'vue3',
     sass: {
-        data: '@import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";',
+        data: `
+        @import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";
+        @import "@/assets/styles/mixins.scss";
+        `,
     },
     mini: {
         imageUrlLoaderOption: {

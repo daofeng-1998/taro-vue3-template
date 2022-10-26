@@ -1,9 +1,6 @@
-import { isEqualArray } from '@/utils/TypeTools/ArrayTools';
+import { isSameArray } from '@/utils/TypeTools/ArrayTools';
 import { isBaseType, isNullOrUndefined } from '@/utils/TypeTools/TypesTools';
 
-export const isObject = (object: any): boolean => {
-    return typeof object === 'object';
-};
 /**
  * 判断是否为空对象
  */
@@ -15,15 +12,20 @@ export const isEmptyObject = (obj: object | null | undefined) => {
 /**
  * 判断任意数据类型是否相等
  */
-export const isEqual = (object: any, target: any): boolean => {
+export const isSame = (object: any, target: any): boolean => {
     if (isBaseType(object) && isBaseType(target)) {
         if (Number.isNaN(object) && Number.isNaN(target))
             return true;
         return object === target; // 基础类型，直接判断
     }
+    if (Array.isArray(object) && !Array.isArray(target))
+        return false;
+
+    if (!Array.isArray(object) && Array.isArray(target))
+        return false;
 
     if (Array.isArray(object) && Array.isArray(target))
-        return isEqualArray(object, target); // 数组类型通过数组判断相等函数进行判断
+        return isSameArray(object, target); // 数组类型通过数组判断相等函数进行判断
 
     if (object instanceof Date && target instanceof Date)
         return object.getTime() === target.getTime(); // Date类型通过时间戳进行判断
@@ -34,11 +36,11 @@ export const isEqual = (object: any, target: any): boolean => {
     const sourceKeys = Object.keys(object);
     const targetKeys = Object.keys(target);
 
-    if (!isEqualArray(sourceKeys, targetKeys))
+    if (!isSameArray(sourceKeys, targetKeys))
         return false; // 两个对象所拥有的key不相同
 
     return sourceKeys.every((key) => {
-        return isEqual(object[key], target[key]);
+        return isSame(object[key], target[key]);
     });
 };
 
@@ -50,12 +52,9 @@ export const deepClone = <T>(target: T): T => {
     if (isBaseType(target)) {
         return target;
     } else if (Array.isArray(target)) {
-        const arr = [];
+        const arr: any[] = [];
 
-        target.forEach((item) => {
-            // @ts-ignore
-            arr.push(deepClone(item));
-        });
+        target.forEach(item => arr.push(deepClone(item)));
         // @ts-ignore
         return arr;
     } else if (target instanceof Date) {

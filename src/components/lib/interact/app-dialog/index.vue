@@ -3,7 +3,7 @@
     setup
 >
 import { useVModel } from '@/hooks/use-lib';
-import v from '@/assets/styles/common-variable.scss';
+import v from '@/assets/styles/variable.scss';
 
 const props = defineProps({
     show: {
@@ -143,9 +143,6 @@ export default { name: 'AppDialog' };
     lang="scss"
     module="s"
 >
-@import '@/assets/styles/common-variable.scss';
-@import '@/assets/styles/common.scss';
-
 .app {
     &-dialog {
         background-color: #fff;
@@ -154,7 +151,7 @@ export default { name: 'AppDialog' };
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        border-radius: $space-small;
+        border-radius: var(--space-small);
         overflow: hidden;
 
         &__overlay {
@@ -163,12 +160,12 @@ export default { name: 'AppDialog' };
         &__title {
             font-weight: 700;
             text-align: center;
-            padding: $space-normal 0;
+            padding: var(--space-normal) 0;
         }
 
         &__content {
             text-align: center;
-            padding: 0 $space-normal $space-large;
+            padding: 0 var(--space-normal) var(--space-large);
             max-height: 60vh;
             overflow-y: scroll;
         }
@@ -180,7 +177,7 @@ export default { name: 'AppDialog' };
                 flex: 1;
 
                 .button {
-                    $height: $space-small * 5;
+                    $height: calc(var(--space-small) * 5);
                     border: 0;
 
                     //text-align: center;

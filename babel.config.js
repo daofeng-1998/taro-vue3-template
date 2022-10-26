@@ -6,7 +6,13 @@ module.exports = {
             framework: 'vue3',
             ts: true,
         }],
+        '@babel/preset-env',
     ],
+    env: {
+        test: {
+            plugins: ['@babel/plugin-transform-modules-commonjs'],
+        },
+    },
     plugins: [
         [
             'import',

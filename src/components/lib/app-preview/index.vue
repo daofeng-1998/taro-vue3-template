@@ -56,25 +56,22 @@ export default { name: 'AppPreview' };
 </template>
 
 <style lang="scss">
-@import '@/components/lib/styles/variable.scss';
-@import '@/assets/styles/common-variable.scss';
-
 .app-preview {
     background-color: #fff;
 
     &__head {
         display: flex;
         justify-content: space-between;
-        font-size: $preview-head-font-size;
+        font-size: var(--preview-head-font-size);
 
         &-wrapper {
             width: 100%;
             display: flex;
-            padding: $space-normal $space-small;
+            padding: var(--space-normal) var(--space-small);
         }
 
         &-label {
-            color: $color-gray2;
+            color: var(--color-gray2);
         }
 
         &-content {
@@ -84,7 +81,7 @@ export default { name: 'AppPreview' };
     }
 
     &__body {
-        padding: $space-small 0;
+        padding: var(--space-small) 0;
     }
 }
 </style>
