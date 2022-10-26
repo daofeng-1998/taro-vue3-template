@@ -36,12 +36,14 @@ export default { name: 'AppGoodsCard' };
             <!-- 图片区域 -->
             <view class="app-goods-card__img-area">
                 <view
+                    :class="direction"
                     class="app-goods-card__img-wrapper"
                     @click.stop="emit('click-image')"
                 >
                     <image
                         :mode="imageMode"
                         :src="imageSrc"
+                        :class="direction"
                         class="app-goods-card__img"
                     />
                 </view>
@@ -117,16 +119,23 @@ export default { name: 'AppGoodsCard' };
 
     &__img {
         width: 100%;
-        height: 100% !important; /* 必须加上important 否则会被taro覆盖 */
         position: absolute;
         top: 0;
         left: 0;
         vertical-align: middle;
 
+        &.horizontal {
+            height: 100% !important; /* 必须加上important 否则会被taro覆盖 */
+        }
+
+        &.vertical {
+            position: unset;
+            height: v-bind(imageHeight);
+        }
+
         &-area {
             align-self: flex-start;
             width: v-bind(imageWidth);
-            //background-color: skyblue;
             overflow: hidden;
             border-radius: var(--border-radius-2);
         }
@@ -134,8 +143,12 @@ export default { name: 'AppGoodsCard' };
         &-wrapper {
             height: 0;
             padding-bottom: v-bind(imageHeight);
-            //background-color: skyblue;
             position: relative;
+
+            &.vertical {
+                height: auto;
+                padding-bottom: unset;
+            }
         }
     }
 

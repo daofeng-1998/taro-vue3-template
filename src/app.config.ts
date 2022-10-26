@@ -5,6 +5,7 @@ export default defineAppConfig({
         'pages/development/route/index',
         'pages/development/hooks/index',
         'pages/development/network-test/index',
+        'pages/development/test-app-goods-card/index',
     ],
     window: {
         backgroundTextStyle: 'light',

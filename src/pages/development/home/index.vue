@@ -10,7 +10,6 @@ import { useLoading } from '@/components/lib/interact/app-loading/use-loading';
 import { useDialog } from '@/components/lib/interact/app-dialog/use-dialog';
 import { go, goAny } from '@/utils/Router';
 import { useFormData } from '@/hooks/use-lib';
-import AppGoodsCard from '@/components/lib/app-goods-card/index.vue';
 import { useCommonStore } from '@/stores/common';
 import AppButtonGroup from '@/components/lib/app-button-group/index.vue';
 
@@ -145,63 +144,16 @@ export default { name: 'Home' };
                 title="表单预览"
                 @click="go('/pages/data/preview/index')"
             />
+            <nut-cell
+                is-link
+                title="商品卡片"
+                @click="go('/pages/development/test-app-goods-card/index')"
+            />
         </nut-cell-group>
 
         <!--
             :image-height="Taro.pxTransform(130)"
         -->
-        <AppGoodsCard
-            :image-src="require('@/assets/images/god.jpg')"
-            :name-line="2"
-            :price="8.12"
-            direction="horizontal"
-            goods-name="大闸蟹大闸蟹大闸蟹大闸蟹大闸蟹"
-            image-mode="aspectFill"
-            image-width="25%"
-            @click-image="dialog.showContent('点击了图片')"
-        >
-            <template #bottom>
-                sadasdas
-            </template>
-            <template #count>
-                <nut-inputnumber
-                    v-model="goodsCount"
-                    button-size="30"
-                    input-width="50rpx"
-                />
-            </template>
-            <template #footer>
-                订单号：165464646
-            </template>
-        </AppGoodsCard>
-
-        <div
-            class="test-app-goods-card-vertical"
-        >
-            <view
-                v-for="i in 4"
-                :key="i"
-                class="wrapper"
-            >
-                <AppGoodsCard
-                    :image-src="require('@/assets/images/god.jpg')"
-                    :name-line="2"
-                    direction="vertical"
-                    goods-name="无限狗头"
-                    image-mode="aspectFill"
-                    image-width="100%"
-
-                    @click-image="dialog.showContent('点击了图片')"
-                />
-                <view class="goods-card-footer">
-                    <nut-price
-                        price="300"
-                        size="normal"
-                    />
-                    <view>立即试用</view>
-                </view>
-            </view>
-        </div>
 
         <nut-cell-group title="工具测试">
             <nut-cell title="倒计时">
@@ -273,30 +225,5 @@ export default { name: 'Home' };
 </template>
 
 <style lang="scss">
-.test-app-goods-card-vertical {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-    padding: 20px;
 
-    .wrapper {
-        border-radius: var(--space-small);
-        overflow: hidden;
-    }
-
-    .goods-card-footer {
-        color: #fff;
-        background-color: #ff5d58;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 26px;
-        padding: var(--padding-1) var(--padding-2);
-
-        .nut-price {
-            color: #fff;
-            display: flex;
-        }
-    }
-}
 </style>
