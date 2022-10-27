@@ -2,12 +2,15 @@
     lang="ts"
     setup
 >
+import { isNullOrUndefined, isString } from '@/utils/TypeTools/TypesTools';
+
 const props = withDefaults(defineProps<{
     imageSrc?: string
     imageMode?: keyof ImageMode
     imageWidth?: string
     imageHeight?: string
     goodsName?: string
+    goodsDesc?: string
     nameLine?: number
     direction?: 'vertical' | 'horizontal'
     count?: number | string
@@ -56,13 +59,23 @@ export default { name: 'AppGoodsCard' };
                     <view class="app-goods-card__body-goods-name">
                         {{ goodsName }}
                     </view>
+                    <view
+                        v-if="isString(goodsDesc) && goodsDesc.length > 0"
+                        class="app-goods-card__body-goods-desc"
+                    >
+                        {{ goodsDesc }}
+                    </view>
+                    <slot
+                        v-else
+                        name="desc"
+                    />
                 </view>
                 <view class="app-goods-card__body-bottom">
                     <slot name="bottom" />
                     <view class="app-goods-card__body-count">
                         <view class="app-goods-card__body-price">
                             <nut-price
-                                v-if="typeof price === 'number' && !Number.isNaN(price)"
+                                v-if="!isNullOrUndefined(price)"
                                 :price="price"
                                 size="normal"
                             />
@@ -161,6 +174,11 @@ export default { name: 'AppGoodsCard' };
 
         &-goods-name {
             @include multi-ellipsis(v-bind(nameLine));
+        }
+
+        &-goods-desc {
+            font-size: .8em;
+            color: var(--color-gray2);
         }
 
         &-count {

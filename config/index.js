@@ -92,6 +92,7 @@ const config = {
         },
     },
     h5: {
+        esnextModules: ['nutui-taro'],
         publicPath: '/',
         staticDirectory: 'static',
         imageUrlLoaderOption: {
