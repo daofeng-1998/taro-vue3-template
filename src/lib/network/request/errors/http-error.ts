@@ -1,4 +1,4 @@
-import type { HttpRequest } from '@/lib/network/http-request/http-request';
+import type { HttpRequest } from '@/lib/network/request/http-request';
 
 declare type IRequestOptions = HttpRequest.IRequestOptions;
 

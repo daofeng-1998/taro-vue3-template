@@ -1,26 +1,19 @@
-import type { HttpRequest } from '@/lib/network/http-request/http-request';
-import Interceptor from '@/lib/network/http-request/interceptor';
-import { HttpError } from '@/lib/network/http-request/errors/http-error';
+import { HttpError } from '@/lib/network/request/errors/http-error';
+import type { HttpRequest } from '@/lib/network/request/http-request';
+import Interceptor from '@/lib/network/request/interceptor';
 import qs from '@/lib/query-string/qs';
 
-type Response = string | HttpRequest.IAnyObject | ArrayBuffer;
 type MethodOptions = HttpRequest.IRequestMethodOptions;
 
-export class Core {
-    /**
-     * 请求适配器，默认为Taro.request
-     * @private
-     */
-    private readonly adaptor: HttpRequest.IAdaptor;
-
+export class HttpCore<RS, PRS = RS & { options: HttpRequest.IRequestOptions }> {
     /**
      * 拦截器
      * */
     public interceptor = {
         /** 请求拦截器 */
-        request: new Interceptor(),
+        request: new Interceptor<HttpRequest.IRequestOptions>(),
         /** 响应拦截器 */
-        response: new Interceptor(),
+        response: new Interceptor<PRS>(),
     };
 
     /**
@@ -31,7 +24,13 @@ export class Core {
         timeout: 10000,
     };
 
-    private constructor(adaptor: HttpRequest.IAdaptor) {
+    /**
+     * 请求适配器，默认为Taro.request
+     * @private
+     */
+    private readonly adaptor: (...args: any[]) => Promise<RS>;
+
+    private constructor(adaptor: (...args: any[]) => Promise<RS>) {
         this.adaptor = adaptor;
     }
 
@@ -39,18 +38,18 @@ export class Core {
      * 创建一个Http请求实例对象
      * @param adaptor
      */
-    public static create(adaptor: HttpRequest.IAdaptor) {
+    public static create<R>(adaptor: (...args: any[]) => Promise<R>) {
         if (!adaptor || typeof adaptor !== 'function')
             throw new TypeError('adaptor is not a function');
 
-        return new Core(adaptor);
+        return new HttpCore(adaptor);
     }
 
     /**
      * 发起通用请求
      * @param options
      */
-    public request = <R extends Response>(options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult<R>> => {
+    public request = (options: HttpRequest.IRequestOptions): Promise<PRS> => {
         /** 最终请求配置信息 */
         const finalOptions = {
             ...this.default, // 默认配置
@@ -86,7 +85,7 @@ export class Core {
      * @param url
      * @param options
      */
-    public get = <R extends Response>(url: string, options?: MethodOptions): Promise<HttpRequest.ISuccessResult<R>> => {
+    public get = (url: string, options?: MethodOptions): Promise<PRS> => {
         return this.request({
             ...options,
             url,
@@ -99,7 +98,7 @@ export class Core {
      * @param url
      * @param options
      */
-    public post = <R extends Response>(url: string, options?: MethodOptions): Promise<HttpRequest.ISuccessResult<R>> => {
+    public post = (url: string, options?: MethodOptions): Promise<PRS> => {
         return this.request({
             ...options,
             url,
@@ -112,7 +111,7 @@ export class Core {
      * @param url
      * @param options
      */
-    public put = <R extends Response>(url: string, options?: MethodOptions): Promise<HttpRequest.ISuccessResult<R>> => {
+    public put = (url: string, options?: MethodOptions): Promise<PRS> => {
         return this.request({
             ...options,
             url,
@@ -125,7 +124,7 @@ export class Core {
      * @param url
      * @param options
      */
-    public delete = <R extends Response>(url: string, options?: MethodOptions): Promise<HttpRequest.ISuccessResult<R>> => {
+    public delete = (url: string, options?: MethodOptions): Promise<PRS> => {
         return this.request({
             ...options,
             url,
@@ -160,15 +159,16 @@ export class Core {
      * @param options
      * @private
      */
-    private dispatchRequest = (options: HttpRequest.IRequestOptions): Promise<HttpRequest.ISuccessResult | HttpError> => {
-        return this.adaptor(options)
-            .then((res) => {
-                res.options = options;
-                return res;
-            }).catch((error) => {
-                const httpError = new HttpError(error.errMsg);
-                httpError.options = options;
-                return httpError;
-            });
+    private dispatchRequest = (options: HttpRequest.IRequestOptions): Promise<PRS | HttpError> => {
+        return this.adaptor(options).then((res) => {
+            return {
+                ...res,
+                options,
+            } as PRS;
+        }).catch((error) => {
+            const httpError = new HttpError(error.errMsg ?? error.message ?? error);
+            httpError.options = options;
+            return Promise.reject(httpError);
+        });
     };
 }

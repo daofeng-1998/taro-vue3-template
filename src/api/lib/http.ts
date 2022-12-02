@@ -1,8 +1,8 @@
-import { Core } from '@/lib/network/http-request/core';
+import { HttpCore } from '@/lib/network/request/http-core';
 import { asyncRequest } from '@/utils/AsyncAPI';
-import type { HttpRequest } from '@/lib/network/http-request/http-request';
+import type { HttpRequest } from '@/lib/network/request/http-request';
 
-const http = Core.create(asyncRequest as HttpRequest.IAdaptor);
+const http = HttpCore.create(asyncRequest as HttpRequest.IAdaptor);
 
 http.default = {
     baseUrl: 'https://a.bioshinecn.cn/Services',
