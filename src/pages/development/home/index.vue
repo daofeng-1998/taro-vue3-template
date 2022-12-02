@@ -86,14 +86,13 @@ const onSms = () => {
     smsDisabled.value = true;
     smsText.value = `${i--}s`;
     const interval = setInterval(() => {
-        Taro.nextTick(() => {
-            smsText.value = `${i}s`;
-            if (i-- < 1) {
-                smsDisabled.value = false;
-                clearInterval(interval);
-                smsText.value = '发送验证码';
-            }
-        });
+        smsText.value = `${i}s`;
+        if (i-- < 1) {
+            smsDisabled.value = false;
+            clearInterval(interval);
+            smsText.value = '发送验证码';
+        }
+        const timeout = setTimeout(() => clearTimeout(timeout));
     }, 1000);
 };
 

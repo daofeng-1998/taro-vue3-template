@@ -18,10 +18,15 @@ interface IController<C> {
     controller?: C
 }
 
+type NotifyType = 'success' | 'danger' | 'info' | 'warning';
+
 /**
  * 通知状态
  */
 interface INotifyState extends IBaseState, IVisible, IMsg {
+    /** 持续时间，单位：毫秒*/
+    duration?: number
+    type?: NotifyType
 }
 
 /**
@@ -67,13 +72,13 @@ interface IDialogBase {
 interface IDialogControl {
 
     /** 常规化配置 */
-    show(options: IDialogBase): Promise<unknown>
+    show(options: IDialogBase): Promise<boolean>
 
     /** 无cancel，confirmText为"确定" */
-    showContent(content: string, title?: string): Promise<unknown>
+    showContent(content: string, title?: string): Promise<boolean>
 
     /** 带cancel，confirmText为"确定"，cancelText为“取消” */
-    showCancel(content: string, title?: string): Promise<unknown>
+    showCancel(content: string, title?: string): Promise<boolean>
 
     /**
      * 手动设置状态

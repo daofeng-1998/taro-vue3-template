@@ -1,11 +1,9 @@
 import type { Ref } from 'vue';
 import { useInstanceDataWithDefault } from '@/components/lib/script/component-tool';
-import { SYMBOL_DIALOG, SYMBOL_LOADING } from '@/components/lib/script/Symbols';
-import { newLoadingState } from '@/components/lib/interact/app-loading/use-loading';
-import { newDialogState } from '@/components/lib/interact/app-dialog/use-dialog';
-
-console.log(newLoadingState);
-console.log(newDialogState);
+import { SYMBOL_DIALOG, SYMBOL_LOADING, SYMBOL_NOTIFY } from '@/components/lib/script/Symbols';
+import { newLoadingState } from '@/components/lib/app-loading/hooks';
+import { newDialogState } from '@/components/lib/app-dialog/hooks';
+import { newNotifyState } from '@/components/lib/app-notify/hooks';
 
 /**
  * 状态容器
@@ -13,6 +11,7 @@ console.log(newDialogState);
 const states = {
     [SYMBOL_DIALOG]: newDialogState,
     [SYMBOL_LOADING]: newLoadingState,
+    [SYMBOL_NOTIFY]: newNotifyState,
 };
 
 /**

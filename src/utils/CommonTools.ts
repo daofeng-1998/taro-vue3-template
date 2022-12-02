@@ -69,3 +69,24 @@ export const random = (min: number, max?: number) => {
         return Math.floor(Math.random() * min + 1);
 };
 
+export const getFirstDay = () => {
+    const date = new Date();
+    date.setDate(1);
+    return formatDate(date, 'yyyy-MM-dd');
+};
+
+export const getToday = () => {
+    return formatDate(new Date(), 'yyyy-MM-dd');
+};
+
+export function getErrorMessage(error: string | Error | any): string {
+    if (typeof error === 'string')
+        return error;
+    else if (error instanceof Error)
+        return error.message;
+    // eslint-disable-next-line no-prototype-builtins
+    else if (error.hasOwnProperty('errMsg'))
+        return error.errMsg;
+    else
+        return String(error);
+}

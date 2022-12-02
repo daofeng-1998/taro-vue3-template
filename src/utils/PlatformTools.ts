@@ -1,29 +1,52 @@
 import Taro from '@tarojs/taro';
+import { globalEnv } from '@/utils/CommonTools';
+
+export const exactTimeout = (func: Function, delay = 0): number => {
+    return globalEnv.setTimeout(() => {
+        func();
+        const inner = setTimeout(() => clearTimeout(inner));
+    }, delay);
+};
 
 /**
  * 精确不卡顿的定时任务
  * @param func
  * @param delay
  */
-export const exactInterval = (func: Function, delay: number): () => boolean => {
-    let stop = false;
+export const exactInterval = (func: Function, delay: number): number => {
+    return globalEnv.setInterval(() => {
+        func();
+        const inner = setTimeout(() => clearTimeout(inner));
+    }, delay);
+};
 
-    let preTime = -1;
-    const handle = (time: number): void => {
-        if (preTime === -1)
-            preTime = time;
+export const getNodeInfo = (selector: string) => {
+    return new Promise<Taro.NodesRef.BoundingClientRectCallbackResult>((resolve) => {
+        Taro.nextTick(() => {
+            const query = Taro.createSelectorQuery();
 
-        if (time - preTime >= delay) {
-            preTime = time;
+            query.select(selector).boundingClientRect((res) => {
+                resolve(res);
+            });
+            query.exec();
+        });
+    });
+};
 
-            // @ts-ignore
-            Taro.nextTick(func);
-            // Taro.nextTick(func);
-        }
+/**
+ * 独有的扫码方式
+ * @returns {Promise<string>}
+ */
+export const uniqueScanCode = () => {
+    return new Promise<string>((resolve, reject) => {
+        Taro.scanCode({
+            success: ({ result: code }) => {
+                if (code.includes('://') || code.includes('='))
+                    code = /=(.*?)(?:&|$)/.exec(code)?.[1] || code;
 
-        stop || requestAnimationFrame(handle);
-    };
-    requestAnimationFrame(handle);
-
-    return () => stop = true;
+                resolve(code);
+            },
+            fail: reject,
+        });
+    });
 };

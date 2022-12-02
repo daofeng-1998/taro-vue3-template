@@ -1,6 +1,7 @@
-<script setup lang="ts">
-import { go } from '@/utils/Router';
-
+<script
+    lang="ts"
+    setup
+>
 defineProps({
     url: {
         type: String,
@@ -10,7 +11,10 @@ defineProps({
 </script>
 
 <template>
-    <div class="app-link" @click="go(url)">
+    <div
+        class="app-link"
+        @click="navigateAny(url)"
+    >
         <slot />
     </div>
 </template>

@@ -2,10 +2,14 @@
     lang="ts"
     setup
 >
+import type { CommonEventFunction } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { computed } from 'vue';
 import { isNullOrUndefined, isString } from '@/utils/TypeTools/TypesTools';
+import AppNumber from '@/components/lib/app-number/index.vue';
 
 const props = withDefaults(defineProps<{
-    imageSrc?: string
+    imageSrc?: string | string[]
     imageMode?: keyof ImageMode
     imageWidth?: string
     imageHeight?: string
@@ -15,15 +19,53 @@ const props = withDefaults(defineProps<{
     direction?: 'vertical' | 'horizontal'
     count?: number | string
     price?: number
+    preview?: boolean
 }>(), {
     imageMode: 'widthFix',
     imageWidth: '30%',
     imageHeight: '100%',
     direction: 'horizontal',
     nameLine: 2,
+    preview: true,
 });
 
-const emit = defineEmits(['click-image']);
+const emit = defineEmits(['clickImage']);
+
+// 缩略图，如果本身是一个字符串，则取本身，如果是数组，则取数组第一个成员
+const thumb = computed<string>(() => {
+    if (isString(props.imageSrc))
+        return props.imageSrc as string;
+    else if (Array.isArray(props.imageSrc) && props.imageSrc.length > 0)
+        return props.imageSrc[0];
+    else
+        return '';
+});
+
+// 是否有缩略图
+const hasImg = computed(() => {
+    return thumb.value.length > 0;
+});
+
+// 预览图片
+const handlePreview: CommonEventFunction = ($event) => {
+    if (props.preview) {
+        let imgArr: string[] = [];
+        if (isString(props.imageSrc)) {
+            // @ts-ignore
+            imgArr.push(props.imageSrc);
+        } else if (Array.isArray(props.imageSrc)) {
+            imgArr = props.imageSrc;
+        }
+
+        Taro.previewImage({
+            urls: imgArr,
+        });
+
+        $event.stopPropagation();
+    } else {
+        emit('clickImage', $event);
+    }
+};
 </script>
 
 <script lang="ts">
@@ -37,15 +79,18 @@ export default { name: 'AppGoodsCard' };
             class="app-goods-card-wrapper"
         >
             <!-- 图片区域 -->
-            <view class="app-goods-card__img-area">
+            <view
+                v-if="hasImg"
+                class="app-goods-card__img-area"
+            >
                 <view
                     :class="direction"
                     class="app-goods-card__img-wrapper"
-                    @click.stop="emit('click-image')"
+                    @click="handlePreview"
                 >
                     <image
                         :mode="imageMode"
-                        :src="imageSrc"
+                        :src="thumb"
                         :class="direction"
                         class="app-goods-card__img"
                     />
@@ -74,10 +119,16 @@ export default { name: 'AppGoodsCard' };
                     <slot name="bottom" />
                     <view class="app-goods-card__body-count">
                         <view class="app-goods-card__body-price">
-                            <nut-price
+                            <!-- <nut-price -->
+                            <!--    v-if="!isNullOrUndefined(price)" -->
+                            <!--    :price="price" -->
+                            <!--    size="normal" -->
+                            <!-- /> -->
+                            <AppNumber
                                 v-if="!isNullOrUndefined(price)"
-                                :price="price"
-                                size="normal"
+                                :number="Number(price).toFixed(2)"
+                                left-symbol="￥"
+                                size="small"
                             />
                             <slot
                                 v-else
@@ -86,7 +137,9 @@ export default { name: 'AppGoodsCard' };
                         </view>
                         <view class="app-goods-card__body-count">
                             <template v-if="count">
-                                x{{ count }}
+                                <text class="app-goods-card__body-count-text">
+                                    x{{ count }}
+                                </text>
                             </template>
                             <slot
                                 v-else
@@ -166,7 +219,6 @@ export default { name: 'AppGoodsCard' };
 
     &__body {
         flex: 1;
-        //height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -184,6 +236,11 @@ export default { name: 'AppGoodsCard' };
         &-count {
             display: flex;
             justify-content: space-between;
+
+            &-text {
+                color: var(--color-gray3);
+                font-size: 26px;
+            }
         }
     }
 }

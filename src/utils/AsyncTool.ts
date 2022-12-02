@@ -14,8 +14,7 @@ export const to = async <T>(promise: Promise<T>): Promise<[Error | any, T | null
     try {
         const res = await promise as T;
         return [null, res];
-    }
-    catch (error) {
+    } catch (error) {
         return [error, null];
     }
 };
@@ -70,8 +69,7 @@ export const cycleCallAsync = (count: number, method: Function): Function => {
             if (err) {
                 if (++counter >= count)
                     throw err;
-            }
-            else {
+            } else {
                 return res;
             }
         } while (true);
@@ -86,8 +84,7 @@ export const er = (func: (...args: any[]) => Promise<unknown> | any) => {
     return async (...args: any[]) => {
         try {
             return await func(...args);
-        }
-        catch (error) {
+        } catch (error) {
             // console.log(error instanceof Error);
             showModal({
                 showCancel: false,

@@ -17,11 +17,9 @@ export default { name: 'AppButtonGroup' };
 <style lang="scss">
 .app-button-group {
     display: flex;
-    //border: 1px solid var(--color-gray1);
     overflow: hidden;
 
     .nut-button {
-        flex: 1;
         border-radius: 0;
 
         border: 0;

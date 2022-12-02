@@ -1,4 +1,4 @@
-import { globalEnv } from '@/utils/CommonTools';
+import { exactTimeout } from '@/utils/PlatformTools';
 
 /**
  * 柯里化
@@ -8,7 +8,6 @@ import { globalEnv } from '@/utils/CommonTools';
  */
 export const curry = (func: Function, count: number): Function => {
     return function _(...args) {
-        debugger;
         if (args.length < count) {
             return function (...a) {
                 return _(...args.concat(a));
@@ -25,17 +24,21 @@ export const curry = (func: Function, count: number): Function => {
  * @param {Boolean} immediate 是否立即实行（true为执行第一次，false为执行最后一次）
  * @param {Function} handle 处理函数
  */
-export const debounce = (wait: number, immediate: boolean, handle: Function): Function => {
+export const debounce = <P extends Array<any>>(
+    wait: number,
+    immediate: boolean,
+    handle: (...args: P) => any,
+) => {
     if (typeof handle !== 'function')
         throw new Error('handle must be an function');
 
     let timeout = -1;
 
-    return function (...args) {
+    return function (...args: P) {
         timeout !== -1 && clearTimeout(timeout);
         const init = immediate && timeout === -1;
 
-        timeout = globalEnv.setTimeout(() => {
+        timeout = exactTimeout(() => {
             timeout = -1;
             !immediate && handle.apply(this, args);
         }, wait);
@@ -43,6 +46,12 @@ export const debounce = (wait: number, immediate: boolean, handle: Function): Fu
         init && handle.apply(this, args);
     };
 };
+
+export function curryDebounce(wait: number, immediate: boolean) {
+    return <P extends Array<any>>(func: (...args: P) => any) => {
+        return debounce(wait, immediate, func);
+    };
+}
 
 /**
  * 节流
