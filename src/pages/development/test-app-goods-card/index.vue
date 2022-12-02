@@ -3,7 +3,7 @@
     setup
 >
 import { ref } from 'vue';
-import { useDialog } from '@/components/lib/interact/app-dialog/use-dialog';
+import { useDialog } from '@/components/lib/app-dialog/hooks';
 import AppGoodsCard from '@/components/lib/app-goods-card/index.vue';
 
 const dialog = useDialog();

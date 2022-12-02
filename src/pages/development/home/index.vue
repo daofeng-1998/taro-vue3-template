@@ -6,12 +6,13 @@ import Taro from '@tarojs/taro';
 import { ref } from 'vue';
 import AppPage from '@/components/lib/app-page/index.vue';
 import { er } from '@/utils/AsyncTool';
-import { useLoading } from '@/components/lib/interact/app-loading/use-loading';
-import { useDialog } from '@/components/lib/interact/app-dialog/use-dialog';
 import { go, goAny } from '@/utils/Router';
 import { useFormData } from '@/hooks/use-lib';
 import { useCommonStore } from '@/stores/common';
 import AppButtonGroup from '@/components/lib/app-button-group/index.vue';
+import { useLoading } from '@/components/lib/app-loading/hooks';
+import { useDialog } from '@/components/lib/app-dialog/hooks';
+import { useNotify } from '@/components/lib/app-notify/hooks';
 
 definePageConfig({
     navigationBarTitleText: '首页',
@@ -19,6 +20,7 @@ definePageConfig({
 
 const Loading = useLoading();
 const dialog = useDialog();
+const notify = useNotify();
 
 const showLoading = er(() => {
     Loading.show();
@@ -127,6 +129,11 @@ export default { name: 'Home' };
                 is-link
                 title="加载中loading"
                 @click="showLoading"
+            />
+            <nut-cell
+                is-link
+                title="通知notify"
+                @click="notify.info('通知消息')"
             />
         </nut-cell-group>
 

@@ -1,6 +1,9 @@
 module.exports = {
     extends: '@antfu',
     rules: {
+        'antfu/if-newline': 'off',
+        'eqeqeq': 'warn',
+        '@typescript-eslint/no-use-before-define': 'off',
         '@typescript-eslint/prefer-ts-expect-error': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
         'no-console': 'off',
@@ -13,5 +16,13 @@ module.exports = {
         'no-debugger': 'warn',
         'no-restricted-syntax': 'off',
         '@typescript-eslint/brace-style': ['error', '1tbs'],
+        'vue/max-attributes-per-line': ['error', {
+            singleline: {
+                max: 1,
+            },
+            multiline: {
+                max: 1,
+            },
+        }],
     },
 };

@@ -6,7 +6,6 @@ import nutui from '@/plugins/nutui';
 // 导入自定义组件状态，需要优先导入
 import '@/components/lib/script/component-states';
 
-import './permission';
 import { useCommonStore } from '@/stores/common';
 
 const App = createApp({
