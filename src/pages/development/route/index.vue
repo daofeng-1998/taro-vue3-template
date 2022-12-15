@@ -2,19 +2,21 @@
     lang="ts"
     setup
 >
-import { useRouteParams } from '@/hooks/use-lib';
+import { Router } from 'tarojs-router-next';
 import AppPage from '@/components/lib/app-page/index.vue';
 
 definePageConfig({
     navigationBarTitleText: '$END$',
 });
-const params = useRouteParams();
-console.log(params);
+const data = {
+    ...Router.getData(),
+    ...Router.getParams(),
+};
 </script>
 
 <template>
     <AppPage>
-        <div>{{ JSON.stringify(params) }}</div>
+        <div>{{ JSON.stringify(data) }}</div>
     </AppPage>
 </template>
 

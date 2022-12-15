@@ -44,6 +44,7 @@
         "@tarojs/taro": "3.4.13",
         "pinia": "^2.0.6",
         "taro-plugin-pinia": "^1.0.0",
+        "tarojs-router-next": "^3.2.0",
         "vue": "^3.2.24"
     },
     "devDependencies": {

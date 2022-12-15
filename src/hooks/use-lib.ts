@@ -1,8 +1,5 @@
 import type { ComputedRef, Ref, UnwrapNestedRefs } from 'vue';
 import { computed, customRef, reactive, ref } from 'vue';
-import { useRouter } from '@tarojs/taro';
-import cache from '@/utils/Cache';
-import { ROUTE_PARAMS_KEY } from '@/utils/Router';
 import type { FormData, useFormOptions } from '@/hooks/hooks';
 import { mergeFunc } from '@/utils/TypeTools/FunctionTools';
 import { BASE_TYPE } from '@/utils/TypeTools/TypesTools';
@@ -86,22 +83,6 @@ export const useForm = <F extends object>(data: useFormOptions<F>): [UnwrapNeste
 
     // @ts-ignore
     return [formData, reset];
-};
-
-export const useRouteParams = () => {
-    const state = reactive({});
-    const { params } = useRouter();
-
-    if (params[ROUTE_PARAMS_KEY]) {
-        const data = cache.get(params[ROUTE_PARAMS_KEY]);
-        Object.assign(state, params, data);
-
-        delete state[ROUTE_PARAMS_KEY];
-        // @ts-ignore
-        delete state.$taroTimestamp;
-    }
-
-    return state;
 };
 
 /**

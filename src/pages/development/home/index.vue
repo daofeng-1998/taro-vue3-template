@@ -6,13 +6,11 @@ import Taro from '@tarojs/taro';
 import { ref } from 'vue';
 import AppPage from '@/components/lib/app-page/index.vue';
 import { er } from '@/utils/AsyncTool';
-import { go, goAny } from '@/utils/Router';
 import { useFormData } from '@/hooks/use-lib';
-import { useCommonStore } from '@/stores/common';
-import AppButtonGroup from '@/components/lib/app-button-group/index.vue';
 import { useLoading } from '@/components/lib/app-loading/hooks';
 import { useDialog } from '@/components/lib/app-dialog/hooks';
 import { useNotify } from '@/components/lib/app-notify/hooks';
+import { navigateAny } from '@/utils/RouterNext';
 
 definePageConfig({
     navigationBarTitleText: '首页',
@@ -67,10 +65,12 @@ const onRichDialog = () => {
 
 const route = {
     onRouteJump() {
-        goAny('/pages/development/route/index?code=123465789798', {
-            name: 'feng',
-            age: 18,
-            address: '的hi发客户看技术按时艰苦的贺卡上撒娇电话卡',
+        navigateAny('/pages/development/route/index?code=123465789798', {
+            data: {
+                name: 'feng',
+                age: 18,
+                address: '的hi发客户看技术按时艰苦的贺卡上撒娇电话卡',
+            },
         });
     },
 };
@@ -97,9 +97,6 @@ const onSms = () => {
         const timeout = setTimeout(() => clearTimeout(timeout));
     }, 1000);
 };
-
-const goodsCount = ref(0);
-console.log(useCommonStore().lunchTime);
 </script>
 
 <script lang="ts">
@@ -144,22 +141,19 @@ export default { name: 'Home' };
                 @click="route.onRouteJump"
             />
         </nut-cell-group>
+
         <nut-cell-group title="数据组件">
             <nut-cell
                 is-link
                 title="表单预览"
-                @click="go('/pages/data/preview/index')"
+                @click="navigateAny('/pages/data/preview/index')"
             />
             <nut-cell
                 is-link
                 title="商品卡片"
-                @click="go('/pages/development/test-app-goods-card/index')"
+                @click="navigateAny('/pages/development/test-app-goods-card/index')"
             />
         </nut-cell-group>
-
-        <!--
-            :image-height="Taro.pxTransform(130)"
-        -->
 
         <nut-cell-group title="工具测试">
             <nut-cell title="倒计时">
@@ -172,61 +166,15 @@ export default { name: 'Home' };
                 </nut-button>
             </nut-cell>
         </nut-cell-group>
-        <AppButtonGroup
-            :style="{
-                'padding': Taro.pxTransform(10),
-                '--button-group-radius': '0',
-                '--button-group-border-color': '#fff',
-                '--button-group-outborder': 0,
-            }"
-        >
-            <nut-button type="danger">
-                按钮
-            </nut-button>
-            <nut-button type="primary">
-                按钮
-            </nut-button>
-            <nut-button type="warning">
-                按钮
-            </nut-button>
-        </AppButtonGroup>
-        <AppButtonGroup
-            :style="{
-                'padding': Taro.pxTransform(10),
-                '--button-group-border-color': '#fff',
-                '--button-group-outborder': 0,
-            }"
-        >
-            <nut-button type="primary">
-                按钮
-            </nut-button>
-            <nut-button type="primary">
-                按钮
-            </nut-button>
-            <nut-button type="primary">
-                按钮
-            </nut-button>
-        </AppButtonGroup>
-        <AppButtonGroup
-            :style="{
-                'padding': Taro.pxTransform(10),
-                '--button-group-border-color': '#000',
-                '--button-group-outborder': Taro.pxTransform(1),
-            }"
-        >
-            <nut-button>
-                按钮
-            </nut-button>
-            <nut-button>
-                按钮
-            </nut-button>
-            <nut-button>
-                按钮
-            </nut-button>
-        </AppButtonGroup>
-        <div
-            style="padding: 100px"
-        />
+
+        <nut-cell-group title="store测试">
+            <nut-cell
+                is-link
+                title="pinia"
+                @click="navigateAny('/pages/development/store/index')"
+            />
+        </nut-cell-group>
+        <view style="padding: 100px" />
     </AppPage>
 </template>
 

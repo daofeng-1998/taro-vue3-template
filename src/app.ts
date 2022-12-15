@@ -17,7 +17,11 @@ App
     .use(nutui)
     .use(store);
 
-// 设置启动时间
-useCommonStore().lunchTime = Date.now();
+// 挂载全局方法
+Object.assign(App.config.globalProperties, {
+    navigateAny,
+    redirectAny,
+    switchAny,
+});
 
 export default App;
