@@ -40,17 +40,12 @@ const config = {
         webpackChain(chain) {
             chain.merge({
                 module: {
-                    rule: {
-                        mjsScript: {
-                            test: /\.mjs$/,
-                            include: [/pinia/],
-                            use: {
-                                babelLoader: {
-                                    loader: require.resolve('babel-loader'),
-                                },
-                            },
+                    rule: [
+                        {
+                            test: /.js$/,
+                            loader: 'babel-loader',
                         },
-                    },
+                    ],
                 },
             });
         },
