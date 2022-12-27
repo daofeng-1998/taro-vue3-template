@@ -37,12 +37,11 @@ const numberMap = {
 const keys = Object.keys(numberMap);
 
 // 插入千分位
-const insertComma = <T = any>(arr: T[]): T[] => {
-    return arr.reduce<T[]>((previousValue, currentValue, index) => {
-        if (index > 0 && index % 3 === 0) {
-            // @ts-ignore
+const insertComma = (arr: string[]) => {
+    return arr.reduce<string[]>((previousValue, currentValue, index) => {
+        if (index > 0 && index % 3 === 0)
             previousValue.push(',');
-        }
+
         return previousValue.concat(currentValue);
     }, []);
 };

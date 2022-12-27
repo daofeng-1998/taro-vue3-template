@@ -50,12 +50,10 @@ const hasImg = computed(() => {
 const handlePreview: CommonEventFunction = ($event) => {
     if (props.preview) {
         let imgArr: string[] = [];
-        if (isString(props.imageSrc)) {
-            // @ts-ignore
+        if (isString(props.imageSrc))
             imgArr.push(props.imageSrc);
-        } else if (Array.isArray(props.imageSrc)) {
+        else if (Array.isArray(props.imageSrc))
             imgArr = props.imageSrc;
-        }
 
         Taro.previewImage({
             urls: imgArr,

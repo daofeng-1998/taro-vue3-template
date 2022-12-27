@@ -2,7 +2,7 @@ import type { ComputedRef, Ref, UnwrapNestedRefs } from 'vue';
 import { computed, customRef, reactive, ref } from 'vue';
 import type { FormData, useFormOptions } from '@/hooks/hooks';
 import { mergeFunc } from '@/utils/TypeTools/FunctionTools';
-import { BASE_TYPE } from '@/utils/TypeTools/TypesTools';
+import { BASE_TYPE_ARRAY } from '@/utils/TypeTools/TypesTools';
 
 export const useVModel = <T>(props: Object, key: string, emit: Function) => {
     return computed<T>({
@@ -46,11 +46,11 @@ export const useFormData = <D extends object, R>(newData: () => D): [UnwrapNeste
 
 export const useForm = <F extends object>(data: useFormOptions<F>): [UnwrapNestedRefs<FormData<F>>, () => void] => {
     // 基本数据类型 + function
-    const dataTypes = BASE_TYPE.concat('function');
+    const dataTypes = BASE_TYPE_ARRAY.concat('function');
 
     /** 获取新的数据 */
     const getDefaultValue = (ele) => {
-        if (BASE_TYPE.includes(typeof ele))
+        if (BASE_TYPE_ARRAY.includes(typeof ele))
             return ele; // 基础类型，直接返回
         else if (typeof ele === 'function')
             return ele(); // 数据工厂，调用获取新的值

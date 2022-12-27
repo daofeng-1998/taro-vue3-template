@@ -5,7 +5,6 @@ import { isBaseType, isNullOrUndefined } from '@/utils/TypeTools/TypesTools';
  * 判断是否为空对象
  */
 export const isEmptyObject = (obj: object | null | undefined) => {
-    // @ts-ignore
     return isNullOrUndefined(obj) || Object.keys(obj).length === 0;
 };
 
@@ -18,14 +17,12 @@ export const isSame = (object: any, target: any): boolean => {
             return true;
         return object === target; // 基础类型，直接判断
     }
-    if (Array.isArray(object) && !Array.isArray(target))
-        return false;
 
-    if (!Array.isArray(object) && Array.isArray(target))
-        return false;
+    const aIsArray = Array.isArray(object);
+    const bIsArray = Array.isArray(target);
 
-    if (Array.isArray(object) && Array.isArray(target))
-        return isSameArray(object, target); // 数组类型通过数组判断相等函数进行判断
+    if (aIsArray !== bIsArray) return false; // 其中一方不是数组，则类型不相等
+    if (aIsArray) return isSameArray(object, target); // 数组类型通过数组判断相等函数进行判断
 
     if (object instanceof Date && target instanceof Date)
         return object.getTime() === target.getTime(); // Date类型通过时间戳进行判断
@@ -52,11 +49,8 @@ export const deepClone = <T>(target: T): T => {
     if (isBaseType(target)) {
         return target;
     } else if (Array.isArray(target)) {
-        const arr: any[] = [];
-
-        target.forEach(item => arr.push(deepClone(item)));
         // @ts-ignore
-        return arr;
+        return target.map(i => deepClone(i));
     } else if (target instanceof Date) {
         // @ts-ignore
         return new Date(target.getTime());

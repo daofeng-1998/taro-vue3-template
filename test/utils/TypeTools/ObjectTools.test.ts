@@ -20,8 +20,7 @@ test('deepClone', () => {
     expect(source === clone).toBe(false);
     expect(isSame(source, clone)).toBe(true);
 
-    // @ts-ignore
-    clone.company = '聚创科技';
+    clone.info.height = 181;
     expect(isSame(source, clone)).toBe(false);
 });
 
